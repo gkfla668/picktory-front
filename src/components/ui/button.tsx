@@ -5,16 +5,14 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-gray-900 text-white text-base border-radius-lg text-base",
-        disabled: "bg-gray-100 text-gray-300 cursor-not-allowed",
-        ghost: "text-gray-200 text-[15px]", // 임시저장
-        ghost_disabled: "text-gray-700 text-[15px] cursor-not-allowed",
+        default:
+          "bg-gray-900 text-white text-base rounded-lg shadow hover:bg-gray-900/90 disabled:bg-gray-100 disabled:text-gray-300 disabled:cursor-not-allowed",
+        ghost: "text-gray-700 text-[15px] hover:text-gray-400 disabled:text-gray-200 disabled:cursor-not-allowed",
         link: "text-primary underline-offset-4 hover:underline",
-        card: "",
       },
       size: {
         sm: "h-[36px] w-[72px]",

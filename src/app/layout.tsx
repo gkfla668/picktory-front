@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Header from "@/components/Header";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
+const pretendard = localFont({
+  src: "./fonts/Pretendard.woff",
+  variable: "--font-pretendard",
   weight: "100 900",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
+const nanumSquareRound = localFont({
+  src: "./fonts/NanumSquareRound.ttf",
+  variable: "--font-nanum-square-round",
   weight: "100 900",
 });
 
@@ -25,10 +26,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      {/* bg-gray-100 임시입니다 */}
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${pretendard.variable} ${nanumSquareRound.variable} antialiased bg-gray-100`}
       >
-        {children}
+        <div className="w-[375px] mx-auto bg-white min-h-full flex flex-col relative">
+          <Header/>
+        <div className="flex-grow">{children}</div>
+        </div>
       </body>
     </html>
   );
