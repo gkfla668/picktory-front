@@ -8,8 +8,7 @@
     "start": "next start",
     "format": "prettier --write .",
     "lint": "next lint",
-    "prepare": "husky install",
-    "postinstall": "husky install"
+    "prepare": "husky"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.1",
