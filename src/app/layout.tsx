@@ -25,10 +25,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      {/* bg-gray-100 임시입니다 */}
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100`}
       >
-        {children}
+        <div className="w-[375px] mx-auto bg-white min-h-full flex flex-col relative">
+        <div className="flex-grow">{children}</div>
+        </div>
       </body>
     </html>
   );
