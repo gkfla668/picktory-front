@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Header from "@/components/Header";
 
 const pretendard = localFont({
   src: "./fonts/Pretendard.woff",
@@ -30,6 +31,7 @@ export default function RootLayout({
         className={`${pretendard.variable} ${nanumSquareRound.variable} antialiased bg-gray-100`}
       >
         <div className="w-[375px] mx-auto bg-white min-h-full flex flex-col relative">
+          <Header/>
         <div className="flex-grow">{children}</div>
         </div>
       </body>
