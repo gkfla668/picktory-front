@@ -15,6 +15,7 @@ const pageTitles: { [key: string]: string } = {
   "/fill-gift": "선물 박스 채우기",
   "/send-gift": "선물 보따리 배달하기",
   "/setting": "설정",
+  "/my-bottari": "내가 만든 보따리",
 };
 
 const Header = () => {
