@@ -1,6 +1,6 @@
 "use client"; // 클라이언트 컴포넌트로 선언
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -25,9 +25,9 @@ const Header = () => {
     pageTitles[pathname ?? ""],
   );
 
-  // URL query에서 title 받아오기
+  const [title, setTitle] = useState<string>("");
+
   const searchParams = useSearchParams();
-  const title = searchParams ? searchParams.get("title") : null;
 
   // 온보딩 및 로그인/회원가입 페이지인지 체크
   const isAuthPage = ["/onboarding", "/login", "/signup"].includes(
@@ -36,6 +36,12 @@ const Header = () => {
 
   // 메인 페이지인지 체크
   const isHomePage = pathname === "/";
+
+  useEffect(() => {
+    if (searchParams) {
+      setTitle(searchParams.get("title") ?? "");
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (title) {
@@ -70,14 +76,16 @@ const Header = () => {
 
   // 나머지 페이지: 뒤로가기 버튼 + 중앙 페이지 타이틀
   return (
-    <div className="h-[56px] flex bg-pink-100 items-center px-4 relative">
-      <button onClick={() => router.back()}>
-        <Image src={ArrowLeftIcon} alt="back" />
-      </button>
-      <h1 className="text-lg font-bold absolute left-1/2 transform -translate-x-1/2">
-        {dynamicTitle}
-      </h1>
-    </div>
+    <Suspense fallback={null}>
+      <div className="h-[56px] flex bg-pink-100 items-center px-4 relative">
+        <button onClick={() => router.back()}>
+          <Image src={ArrowLeftIcon} alt="back" />
+        </button>
+        <h1 className="text-lg font-bold absolute left-1/2 transform -translate-x-1/2">
+          {dynamicTitle}
+        </h1>
+      </div>
+    </Suspense>
   );
 };
 
