@@ -1,8 +1,8 @@
 "use client"; // 클라이언트 컴포넌트로 선언
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import LogoIcon from "../public/icons/logo.svg";
 import SettingIcon from "../public/icons/setting_large.svg";
@@ -27,15 +27,23 @@ const Header = () => {
 
   const [title, setTitle] = useState<string>("");
 
-  const searchParams = useSearchParams();
+  const [searchParams, setSearchParams] = useState<URLSearchParams | null>(
+    null,
+  );
 
-  // 온보딩 및 로그인/회원가입 페이지인지 체크
   const isAuthPage = ["/onboarding", "/login", "/signup"].includes(
     pathname ?? "",
   );
 
-  // 메인 페이지인지 체크
   const isHomePage = pathname === "/";
+
+  useEffect(() => {
+    // 클라이언트에서만 searchParams를 사용할 수 있도록 설정
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      setSearchParams(params);
+    }
+  }, []);
 
   useEffect(() => {
     if (searchParams) {
@@ -76,16 +84,14 @@ const Header = () => {
 
   // 나머지 페이지: 뒤로가기 버튼 + 중앙 페이지 타이틀
   return (
-    <Suspense fallback={null}>
-      <div className="h-[56px] flex bg-pink-100 items-center px-4 relative">
-        <button onClick={() => router.back()}>
-          <Image src={ArrowLeftIcon} alt="back" />
-        </button>
-        <h1 className="text-lg font-bold absolute left-1/2 transform -translate-x-1/2">
-          {dynamicTitle}
-        </h1>
-      </div>
-    </Suspense>
+    <div className="h-[56px] flex bg-pink-100 items-center px-4 relative">
+      <button onClick={() => router.back()}>
+        <Image src={ArrowLeftIcon} alt="back" />
+      </button>
+      <h1 className="text-lg font-bold absolute left-1/2 transform -translate-x-1/2">
+        {dynamicTitle}
+      </h1>
+    </div>
   );
 };
 
