@@ -5,7 +5,7 @@ import Image from "next/image";
 interface CardProps {
   img: string;
   size: "small" | "medium";
-  isActive: boolean;
+  isActive?: boolean;
   onClick: () => void;
 }
 
@@ -20,7 +20,7 @@ const Card = ({ img, size, isActive, onClick }: CardProps) => {
 
   return (
     <div
-      className={`flex justify-center border-[1.4px] items-center ${borderColorClasses} ${sizeClasses} rounded-xl box-border bg-gray-50 p-1`}
+      className={`flex justify-center border-[1.4px] items-center ${borderColorClasses} ${sizeClasses} rounded-xl box-border bg-gray-50 p-1 cursor-pointer active:border-gray-700 hover:border-gray-700`}
       onClick={onClick}
     >
       <Image
