@@ -58,7 +58,7 @@ const Header = () => {
             <Image src={LogoIcon} alt="logo" />
           </button>
           <button onClick={() => router.push("/setting")}>
-            <Image src={SettingIcon} alt="logo" />
+            <Image src={SettingIcon} alt="setting" />
           </button>
         </div>
       </div>
