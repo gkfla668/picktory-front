@@ -4,11 +4,11 @@ import { useRouter } from "next/navigation";
 
 import Card from "@/components/Card";
 
-interface MyBottariListProps {
+interface MyGiftBagListtProps {
   bottariData: string[];
 }
 
-const MyBottariList = ({ bottariData }: MyBottariListProps) => {
+const MyGiftBagList = ({ bottariData }: MyGiftBagListtProps) => {
   const router = useRouter();
 
   const handleCardClick = (index: number) => {
@@ -29,4 +29,4 @@ const MyBottariList = ({ bottariData }: MyBottariListProps) => {
   );
 };
 
-export default MyBottariList;
+export default MyGiftBagList;

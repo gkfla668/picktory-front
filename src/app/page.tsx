@@ -3,10 +3,10 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import MyBottariList from "@/components/MybottariList";
+import MyBottariList from "@/components/MyGiftBagList";
 
-import MainGraphic from "../public/imgs/main_graphic.png";
-import ArrowRightIcon from "../public/icons/arrow_right_small.svg";
+import MainGraphic from "/public/img/main_graphic.svg";
+import ArrowRightIcon from "/public/icons/arrow_right_small.svg";
 
 // 임시 데이터
 // 추후 서버에서 받아오기
