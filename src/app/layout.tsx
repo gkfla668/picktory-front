@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Header from "@/components/common/Header";
+import Header from "@/layout/Header";
+import { Suspense } from "react";
 
 const pretendard = localFont({
   src: "./fonts/Pretendard.woff",
@@ -31,7 +32,9 @@ export default function RootLayout({
         className={`${pretendard.variable} ${nanumSquareRound.variable} antialiased bg-gray-100`}
       >
         <div className="w-[375px] mx-auto bg-white min-h-screen flex flex-col relative">
-          <Header />
+          <Suspense>
+            <Header />
+          </Suspense>
           <div className="flex-grow">{children}</div>
         </div>
       </body>
