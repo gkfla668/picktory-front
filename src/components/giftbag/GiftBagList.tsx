@@ -1,7 +1,7 @@
 "use client";
 
-import Card from "@/components/Card";
-import { useStore } from "../_stores/useStore";
+import { useStore } from "@/app/giftbag/_stores/useStore";
+import Card from "@/components/common/Card";
 
 interface GiftBagListProps {
   numberOfCards: number;
