@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 import LogoIcon from "../../public/icons/logo.svg";
 import SettingIcon from "../../public/icons/setting_large.svg";
@@ -20,42 +20,23 @@ const pageTitles: { [key: string]: string } = {
 const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [dynamicTitle, setDynamicTitle] = useState<string>(
     pageTitles[pathname ?? ""],
   );
 
-  const [title, setTitle] = useState<string>("");
-
-  const [searchParams, setSearchParams] = useState<URLSearchParams | null>(
-    null,
-  );
-
   const isAuthPage = ["/onboarding", "/login", "/signup"].includes(
     pathname ?? "",
   );
-
   const isHomePage = pathname === "/";
 
   useEffect(() => {
-    // 클라이언트에서만 searchParams를 사용할 수 있도록 설정
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      setSearchParams(params);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (searchParams) {
-      setTitle(searchParams.get("title") ?? "");
+    const title = searchParams?.get("title"); // 쿼리 파라미터에서 title 가져오기
+    if (title) {
+      setDynamicTitle(title);
     }
   }, [searchParams]);
-
-  useEffect(() => {
-    if (title) {
-      setDynamicTitle(String(title));
-    }
-  }, [title]);
 
   // 메인 페이지: 로고 + 설정 아이콘
   if (isHomePage) {
