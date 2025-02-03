@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import MyBagList from "@/components/MybottariList";
+import MyBottariList from "@/components/MybottariList";
 
 import MainGraphic from "../public/imgs/main_graphic.png";
 import ArrowRightIcon from "../public/icons/arrow_right_small.svg";
@@ -49,7 +49,7 @@ export default function Home() {
             style={{ scrollbarWidth: "none" }}
           >
             {isHave ? (
-              <MyBagList imgPaths={ImagePaths} />
+              <MyBottariList bottariData={ImagePaths} />
             ) : (
               <p className="h-[88px] flex justify-center items-center text-gray-200">
                 아직 만들어진 보따리가 없습니다.
