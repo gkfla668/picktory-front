@@ -5,14 +5,14 @@ import Header from "@/layout/Header";
 import { Suspense } from "react";
 
 const pretendard = localFont({
-  src: "./fonts/Pretendard.woff",
+  src: "./fonts/PretendardVariable.woff2",
   variable: "--font-pretendard",
-  weight: "100 900",
+  weight: "100 200 300 400 500 600 700 800 900",
 });
 const nanumSquareRound = localFont({
   src: "./fonts/NanumSquareRound.ttf",
   variable: "--font-nanum-square-round",
-  weight: "100 900",
+  weight: "100 200 300 400 500 600 700 800 900",
 });
 
 export const metadata: Metadata = {
