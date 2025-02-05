@@ -33,10 +33,10 @@ export default function RootLayout({
         <div className="max-w-[430px] min-w-[375px] mx-auto bg-white min-h-screen flex flex-col relative">
           <Suspense>
             <Header />
+            <div className="flex-grow" style={{ height: "calc(100vh - 56px)" }}>
+              {children}
+            </div>
           </Suspense>
-          <div className="flex-grow" style={{ height: "calc(100vh - 56px)" }}>
-            {children}
-          </div>
         </div>
       </body>
     </html>
