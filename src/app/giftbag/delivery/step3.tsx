@@ -14,7 +14,7 @@ const Step3 = () => {
   const character = searchParams ? searchParams.get("character") : null;
 
   return (
-    <div className="flex flex-col items-center gap-7 pt-[52px]">
+    <div className="h-full flex flex-col items-center justify-center gap-7">
       <h1 className="text-gray-900 text-[18px] font-bold font-nanum">
         이제 보따리를 배달할 차례에요!
       </h1>
