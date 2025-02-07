@@ -55,7 +55,7 @@ const Step2 = ({ onNextStep }: Step2Props) => {
           </div>
         </div>
       </section>
-      <div className="w-full px-4 absolute bottom-2">
+      <div className="w-full px-4 absolute bottom-4">
         <Button onClick={() => onNextStep(character || "포리")} size="lg">
           선물 보따리 배달하기
         </Button>
