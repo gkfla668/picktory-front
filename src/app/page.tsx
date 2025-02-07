@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import MyBottariList from "@/components/MyGiftBagList";
+import MyBottariList from "@/components/myGiftbag/MyGiftBagList";
 
 import MainGraphic from "/public/img/main_graphic.svg";
 import ArrowRightIcon from "/public/icons/arrow_right_small.svg";
@@ -35,12 +35,12 @@ export default function Home() {
         </button>
         <section className="flex flex-col gap-[14px] w-full">
           <div
-            className="flex justify-between"
-            onClick={() => router.push(`/my-bottari`)}
+            className="flex justify-between items-center"
+            onClick={() => router.push(`/giftbag/list`)}
           >
-            <p>내가 만든 보따리</p>
+            <p className="font-medium text-gray-900">내가 만든 보따리</p>
             <button className="flex justify-center items-center">
-              <p>더보기</p>
+              <p className="text-gray-600 text-[14px]">더보기</p>
               <Image src={ArrowRightIcon} alt="more" />
             </button>
           </div>
