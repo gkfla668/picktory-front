@@ -12,6 +12,7 @@ import { useEditBoxStore } from "@/stores/gift-upload/useStore";
 // 정적 title 관리
 // 임시 매핑
 const pageTitles: { [key: string]: string } = {
+  "/giftbag/delivery": "선물 보따리 배달하기",
   "/giftbag": "선물 보따리 만들기",
   "/gift-upload": "선물 박스 채우기",
   "/setting": "설정",
@@ -26,6 +27,8 @@ const Header = () => {
   const [dynamicTitle, setDynamicTitle] = useState<string>(
     pageTitles[pathname ?? ""],
   );
+  const [isStepThree, setIsStepThree] = useState<boolean>(false);
+  const { setIsBoxEditing } = useEditBoxStore();
 
   const isAuthPage = ["/onboarding", "/login", "/signup"].includes(
     pathname ?? "",
@@ -34,9 +37,19 @@ const Header = () => {
   const isNotFoundPage = !Object.keys(pageTitles).some((key) =>
     pathname?.startsWith(key),
   );
+  const isGiftbagDeliveryPage = pathname === "/giftbag/delivery";
   const isGiftUploadPage = pathname === "/gift-upload";
 
-  const { setIsBoxEditing } = useEditBoxStore();
+  // step 파라미터 변경 시 상태 업데이트
+  useEffect(() => {
+    const step = searchParams?.get("step");
+    setIsStepThree(step === "3");
+  }, [searchParams]);
+
+  // pathname 변경 시 isStepThree 상태 초기화
+  useEffect(() => {
+    setIsStepThree(false);
+  }, [pathname]);
 
   useEffect(() => {
     const title = searchParams?.get("title"); // 쿼리 파라미터에서 title 가져오기
@@ -84,16 +97,19 @@ const Header = () => {
   // 나머지 페이지: 뒤로가기 버튼 + 중앙 페이지 타이틀
   return (
     <div className="h-[56px] flex bg-pink-100 items-center px-4 relative">
-      <button
-        onClick={() => {
-          if (isGiftUploadPage) {
-            setIsBoxEditing(false);
-          }
-          router.back();
-        }}
-      >
-        <Image src={ArrowLeftIcon} alt="back" />
-      </button>
+      {/* step이 3일 때만 뒤로가기 버튼 숨기기 */}
+      {!(isStepThree && isGiftbagDeliveryPage) && (
+        <button
+          onClick={() => {
+            if (isGiftUploadPage) {
+              setIsBoxEditing(false);
+            }
+            router.back();
+          }}
+        >
+          <Image src={ArrowLeftIcon} alt="back" />
+        </button>
+      )}
       <h1 className="text-lg font-bold absolute left-1/2 transform -translate-x-1/2">
         {dynamicTitle}
       </h1>
