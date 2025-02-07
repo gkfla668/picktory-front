@@ -26,17 +26,10 @@ const Page = () => {
     }
   };
 
-  const handlePrevStep = () => {
-    if (step === "3") router.push("/giftbag/delivery?step=2");
-    if (step === "2") router.push("/giftbag/delivery?step=1");
-  };
-
   return (
     <div className="h-full px-4 pb-4 relative">
       {step === "1" && <Step1 onNextStep={handleNextStep} />}
-      {step === "2" && (
-        <Step2 onNextStep={handleNextStep} onPrevStep={handlePrevStep} />
-      )}
+      {step === "2" && <Step2 onNextStep={handleNextStep} />}
       {step === "3" && <Step3 />}
     </div>
   );
