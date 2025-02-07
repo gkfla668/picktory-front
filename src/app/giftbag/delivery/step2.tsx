@@ -10,16 +10,15 @@ import { Button } from "@/components/ui/button";
 
 interface Step2Props {
   onNextStep: (selectedCharacter: string) => void;
-  onPrevStep: () => void;
 }
 
-const Step2 = ({ onNextStep, onPrevStep }: Step2Props) => {
+const Step2 = ({ onNextStep }: Step2Props) => {
   const searchParams = useSearchParams();
   const character = searchParams ? searchParams.get("character") : null;
 
   return (
-    <div className="h-full w-full flex flex-col items-center justify-between gap-7 pt-[42px]">
-      <section className="flex flex-col items-center">
+    <div className="h-[calc(100%-52px)] w-full flex flex-col items-center justify-center gap-7">
+      <section className="flex flex-col items-center ">
         <div className="flex flex-col items-center">
           <div className="mb-[3px] ">
             <p className="font-nanum text-[12px] font-bold">
@@ -56,24 +55,11 @@ const Step2 = ({ onNextStep, onPrevStep }: Step2Props) => {
           </div>
         </div>
       </section>
-
-      {/* Button Section */}
-      <section className="flex gap-2 w-full absolute bottom-4 mx-4">
-        <Button
-          onClick={onPrevStep}
-          size="lg"
-          className="bg-gray-100 text-gray-600 ml-4"
-        >
-          다시 선택하기
+      <div className="w-full px-4 absolute bottom-2">
+        <Button onClick={() => onNextStep(character || "포리")} size="lg">
+          선물 보따리 배달하기
         </Button>
-        <Button
-          onClick={() => onNextStep(character || "포리")}
-          size="lg"
-          className="mr-4"
-        >
-          선택 완료하기
-        </Button>
-      </section>
+      </div>
     </div>
   );
 };
