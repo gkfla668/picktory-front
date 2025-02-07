@@ -4,56 +4,72 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import ChipList from "./ChipList";
 import CustomTextArea from "./CustomTextArea";
-import { GIFT_SELECT_REASON_MAX_LENGTH } from "@/app/constants/constants";
+import {
+  GIFT_SELECT_REASON_MAX_LENGTH,
+  REASON_CHIP_MESSAGES,
+  REASON_CHIP_TEXTES,
+} from "@/app/constants/constants";
 import GiftIcon from "../../../public/img/gift_letter_square.svg";
-import { useGiftStore, useTagIndexStore } from "@/stores/gift-upload/useStore";
-
-const chipText = ["직접 입력", "취향 저격", "실용적", "특별한 의미", "트렌드"];
-const chipMessages = [
-  "",
-  "당신의 취향을 저격할 수 있는 선물일 것 같아요!",
-  "매일 쓰면서 저를 떠올려 주세요!",
-  "특별한 순간, 특별한 마음을 담아 준비했어요.",
-  "지금 가장 핫한 아이템으로 마음을 전합니다.",
-];
+import {
+  useEditBoxStore,
+  useGiftStore,
+  useTagIndexStore,
+} from "@/stores/gift-upload/useStore";
 
 interface InputReasonProps {
-  value?: string;
+  value: string;
   onReasonChange: (text: string) => void;
   onTagChange: (tag: string) => void;
   giftBoxIndex: number;
 }
 
 const InputReason = ({
-  value = "",
+  value,
   onReasonChange,
   onTagChange,
   giftBoxIndex,
 }: InputReasonProps) => {
-  const [isClicked, setIsClicked] = useState(false);
-  const { setSelectedTagIndex } = useTagIndexStore();
-  const [text, setText] = useState(value);
-  const [tagIndex, setTagIndex] = useState(0);
+  const { selectedTagIndex, setSelectedTagIndex } = useTagIndexStore();
+  const { isBoxEditing } = useEditBoxStore();
+  const [inputValue, setInputValue] = useState(value);
 
   const { giftBoxes } = useGiftStore();
-
-  const selectedTagIndex = giftBoxes[giftBoxIndex].tagIndex || tagIndex;
+  const [isClicked, setIsClicked] = useState(giftBoxes[giftBoxIndex].filled);
+  const [tagIndex, setTagIndex] = useState(giftBoxes[giftBoxIndex].tagIndex);
 
   useEffect(() => {
-    setText(value);
+    setInputValue(value);
   }, [value]);
 
   useEffect(() => {
-    setSelectedTagIndex(selectedTagIndex);
+    setSelectedTagIndex(tagIndex);
   }, [tagIndex]);
+
+  useEffect(() => {
+    if (giftBoxes[giftBoxIndex].filled) setIsClicked(true);
+  }, [isBoxEditing]);
+
+  useEffect(() => {
+    if (isBoxEditing) {
+      const currentTagIndex = giftBoxes[giftBoxIndex].tagIndex;
+      setTagIndex(currentTagIndex);
+      setSelectedTagIndex(currentTagIndex);
+    }
+  }, [isBoxEditing, giftBoxIndex, giftBoxes]);
 
   const handleChipClick = (index: number) => {
     setTagIndex(index);
     setSelectedTagIndex(index);
-    const newText = chipMessages[index];
-    setText(newText);
+    const newText = REASON_CHIP_MESSAGES[index];
+    setInputValue(newText);
     onReasonChange(newText);
-    onTagChange(chipText[index]);
+    onTagChange(REASON_CHIP_TEXTES[index]);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newText = e.target.value;
+    setInputValue(newText);
+    onReasonChange(newText);
   };
 
   return (
@@ -84,7 +100,7 @@ const InputReason = ({
             >
               <div className="min-w-max">
                 <ChipList
-                  chipText={chipText}
+                  chipText={REASON_CHIP_TEXTES}
                   selectedChipIndex={selectedTagIndex}
                   onChipClick={handleChipClick}
                 />
@@ -92,8 +108,8 @@ const InputReason = ({
             </div>
             <CustomTextArea
               placeholder="직접 입력해주세요."
-              text={text}
-              onTextChange={(e) => onReasonChange(e.target.value)}
+              text={inputValue}
+              onTextChange={handleInputChange}
               maxLength={GIFT_SELECT_REASON_MAX_LENGTH}
             />
           </>
