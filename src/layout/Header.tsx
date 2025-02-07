@@ -26,6 +26,7 @@ const Header = () => {
   const [dynamicTitle, setDynamicTitle] = useState<string>(
     pageTitles[pathname ?? ""],
   );
+  const [isStepThree, setIsStepThree] = useState<boolean>(false);
 
   const isAuthPage = ["/onboarding", "/login", "/signup"].includes(
     pathname ?? "",
@@ -34,6 +35,18 @@ const Header = () => {
   const isNotFoundPage = !Object.keys(pageTitles).some((key) =>
     pathname?.startsWith(key),
   );
+  const isGiftbagDeliveryPage = pathname === "/giftbag/delivery";
+
+  // step 파라미터 변경 시 상태 업데이트
+  useEffect(() => {
+    const step = searchParams?.get("step");
+    setIsStepThree(step === "3");
+  }, [searchParams]);
+
+  // pathname 변경 시 isStepThree 상태 초기화
+  useEffect(() => {
+    setIsStepThree(false);
+  }, [pathname]);
 
   useEffect(() => {
     const title = searchParams?.get("title"); // 쿼리 파라미터에서 title 가져오기
@@ -81,9 +94,12 @@ const Header = () => {
   // 나머지 페이지: 뒤로가기 버튼 + 중앙 페이지 타이틀
   return (
     <div className="h-[56px] flex bg-pink-100 items-center px-4 relative">
-      <button onClick={() => router.back()}>
-        <Image src={ArrowLeftIcon} alt="back" />
-      </button>
+      {/* step이 3일 때만 뒤로가기 버튼 숨기기 */}
+      {!(isStepThree && isGiftbagDeliveryPage) && (
+        <button onClick={() => router.back()}>
+          <Image src={ArrowLeftIcon} alt="back" />
+        </button>
+      )}
       <h1 className="text-lg font-bold absolute left-1/2 transform -translate-x-1/2">
         {dynamicTitle}
       </h1>
