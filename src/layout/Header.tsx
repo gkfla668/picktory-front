@@ -7,6 +7,7 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import LogoIcon from "../../public/icons/logo.svg";
 import SettingIcon from "../../public/icons/setting_large.svg";
 import ArrowLeftIcon from "../../public/icons/arrow_left_large.svg";
+import { useEditBoxStore } from "@/stores/gift-upload/useStore";
 
 // 정적 title 관리
 // 임시 매핑
@@ -30,6 +31,12 @@ const Header = () => {
     pathname ?? "",
   );
   const isHomePage = pathname === "/";
+  const isNotFoundPage = !Object.keys(pageTitles).some((key) =>
+    pathname?.startsWith(key),
+  );
+  const isGiftUploadPage = pathname === "/gift-upload";
+
+  const { setIsBoxEditing } = useEditBoxStore();
 
   useEffect(() => {
     const title = searchParams?.get("title"); // 쿼리 파라미터에서 title 가져오기
@@ -65,8 +72,8 @@ const Header = () => {
     );
   }
 
-  // 온보딩 / 로그인 / 회원가입 페이지: 로고만
-  if (isAuthPage) {
+  // 온보딩 / 로그인 / 회원가입 페이지 / 404 페이지: 로고만
+  if (isAuthPage || isNotFoundPage) {
     return (
       <div className="h-[56px] flex bg-pink-100 items-center justify-center">
         <Image src={LogoIcon} alt="logo" />
@@ -77,7 +84,14 @@ const Header = () => {
   // 나머지 페이지: 뒤로가기 버튼 + 중앙 페이지 타이틀
   return (
     <div className="h-[56px] flex bg-pink-100 items-center px-4 relative">
-      <button onClick={() => router.back()}>
+      <button
+        onClick={() => {
+          if (isGiftUploadPage) {
+            setIsBoxEditing(false);
+          }
+          router.back();
+        }}
+      >
         <Image src={ArrowLeftIcon} alt="back" />
       </button>
       <h1 className="text-lg font-bold absolute left-1/2 transform -translate-x-1/2">
