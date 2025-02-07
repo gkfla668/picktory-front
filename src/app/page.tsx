@@ -40,7 +40,7 @@ export default function Home() {
           >
             <p className="font-medium text-gray-900">내가 만든 보따리</p>
             <button className="flex justify-center items-center">
-              <p className="text-gray-600 text-[14px]">더보기</p>
+              <p className="text-gray-600 text-sm">더보기</p>
               <Image src={ArrowRightIcon} alt="more" />
             </button>
           </div>
