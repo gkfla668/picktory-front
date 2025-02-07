@@ -12,11 +12,11 @@ import { useEditBoxStore } from "@/stores/gift-upload/useStore";
 // 정적 title 관리
 // 임시 매핑
 const pageTitles: { [key: string]: string } = {
+  "/giftbag/list": "내가 만든 보따리",
   "/giftbag/delivery": "선물 보따리 배달하기",
   "/giftbag": "선물 보따리 만들기",
   "/gift-upload": "선물 박스 채우기",
   "/setting": "설정",
-  "/my-bottari": "내가 만든 보따리",
 };
 
 const Header = () => {
