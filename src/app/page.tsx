@@ -35,8 +35,8 @@ export default function Home() {
         </button>
         <section className="flex flex-col gap-[14px] w-full">
           <div
-            className="flex justify-between"
-            onClick={() => router.push(`/my-bottari`)}
+            className="flex justify-between items-center"
+            onClick={() => router.push(`/giftbag/list`)}
           >
             <p className="font-medium text-gray-900">내가 만든 보따리</p>
             <button className="flex justify-center items-center">
