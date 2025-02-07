@@ -7,6 +7,7 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import LogoIcon from "../../public/icons/logo.svg";
 import SettingIcon from "../../public/icons/setting_large.svg";
 import ArrowLeftIcon from "../../public/icons/arrow_left_large.svg";
+import { useEditBoxStore } from "@/stores/gift-upload/useStore";
 
 // 정적 title 관리
 // 임시 매핑
@@ -27,6 +28,7 @@ const Header = () => {
     pageTitles[pathname ?? ""],
   );
   const [isStepThree, setIsStepThree] = useState<boolean>(false);
+  const { setIsBoxEditing } = useEditBoxStore();
 
   const isAuthPage = ["/onboarding", "/login", "/signup"].includes(
     pathname ?? "",
@@ -36,6 +38,7 @@ const Header = () => {
     pathname?.startsWith(key),
   );
   const isGiftbagDeliveryPage = pathname === "/giftbag/delivery";
+  const isGiftUploadPage = pathname === "/gift-upload";
 
   // step 파라미터 변경 시 상태 업데이트
   useEffect(() => {
@@ -96,7 +99,14 @@ const Header = () => {
     <div className="h-[56px] flex bg-pink-100 items-center px-4 relative">
       {/* step이 3일 때만 뒤로가기 버튼 숨기기 */}
       {!(isStepThree && isGiftbagDeliveryPage) && (
-        <button onClick={() => router.back()}>
+        <button
+          onClick={() => {
+            if (isGiftUploadPage) {
+              setIsBoxEditing(false);
+            }
+            router.back();
+          }}
+        >
           <Image src={ArrowLeftIcon} alt="back" />
         </button>
       )}
