@@ -39,10 +39,10 @@ const Header = () => {
   const { setIsBoxEditing } = useEditBoxStore();
 
   useEffect(() => {
-    const title = searchParams?.get("title"); // 쿼리 파라미터에서 title 가져오기
+    const title = searchParams?.get("title");
 
     if (title) {
-      setDynamicTitle(title); // title이 있으면 그걸로 설정
+      setDynamicTitle(title);
     } else {
       // pageTitles의 모든 경로에 대해 pathname이 포함되는지 확인
       const matchedTitle = Object.keys(pageTitles).find(
@@ -59,7 +59,7 @@ const Header = () => {
   // 메인 페이지: 로고 + 설정 아이콘
   if (isHomePage) {
     return (
-      <div className="h-[56px] flex bg-pink-100">
+      <div className="h-[56px] flex">
         <div className="flex items-center justify-between px-4 w-full">
           <button onClick={() => router.push("/")}>
             <Image src={LogoIcon} alt="logo" />
@@ -75,7 +75,7 @@ const Header = () => {
   // 온보딩 / 로그인 / 회원가입 페이지 / 404 페이지: 로고만
   if (isAuthPage || isNotFoundPage) {
     return (
-      <div className="h-[56px] flex bg-pink-100 items-center justify-center">
+      <div className="h-[56px] flex  items-center justify-center">
         <Image src={LogoIcon} alt="logo" />
       </div>
     );
@@ -83,7 +83,7 @@ const Header = () => {
 
   // 나머지 페이지: 뒤로가기 버튼 + 중앙 페이지 타이틀
   return (
-    <div className="h-[56px] flex bg-pink-100 items-center px-4 relative">
+    <div className="h-[56px] flex  items-center px-4 relative">
       <button
         onClick={() => {
           if (isGiftUploadPage) {
@@ -94,7 +94,7 @@ const Header = () => {
       >
         <Image src={ArrowLeftIcon} alt="back" />
       </button>
-      <h1 className="text-lg font-bold absolute left-1/2 transform -translate-x-1/2">
+      <h1 className="text-lg font-bold absolute left-1/2 transform -translate-x-1/2 w-[185px] overflow-hidden whitespace-nowrap text-ellipsis">
         {dynamicTitle}
       </h1>
     </div>
