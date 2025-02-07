@@ -12,18 +12,22 @@ const Page = () => {
   const router = useRouter();
 
   return (
-    <div className="h-full bg-pink-50 flex flex-col items-center p-4 gap-10">
-      <div className="flex flex-col gap-7 w-[300px] items-center">
-        <Chip text={`채워진 선물박스 ${filledGiftCount}개`} />
-        <GiftList value={giftBoxes} />
+    <div className="h-full bg-pink-50 px-4">
+      <div className="h-[calc(100%-52px)] flex flex-col items-center justify-center">
+        <div className="flex flex-col gap-7 w-[300px] items-center">
+          <Chip text={`채워진 선물박스 ${filledGiftCount}개`} />
+          <GiftList value={giftBoxes} />
+        </div>
+        <div className="w-full px-4 absolute bottom-4">
+          <Button
+            disabled={filledGiftCount <= 1}
+            size="lg"
+            onClick={() => router.push("/giftbag/delivery?step=1")}
+          >
+            선물 배달하러 가기
+          </Button>
+        </div>
       </div>
-      <Button
-        disabled={filledGiftCount <= 1}
-        size="lg"
-        onClick={() => router.push("/giftbag/delivery?step=1")}
-      >
-        선물 배달하러 가기
-      </Button>
     </div>
   );
 };
