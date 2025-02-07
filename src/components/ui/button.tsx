@@ -14,10 +14,11 @@ const buttonVariants = cva(
         ghost:
           "text-gray-700 text-[15px] hover:text-gray-400 disabled:text-gray-200 disabled:cursor-not-allowed",
         link: "text-primary underline-offset-4 hover:underline",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
       },
       size: {
         sm: "h-[36px] w-full",
-        md: "h-[52px] w-full",
         lg: "h-[52px] w-full",
         icon_sm: "h-[14px] w-[14px]",
         icon_md: "h-[18px] w-[18px]",
