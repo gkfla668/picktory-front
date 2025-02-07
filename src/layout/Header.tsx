@@ -109,7 +109,7 @@ const Header = () => {
           <Image src={ArrowLeftIcon} alt="back" />
         </button>
       )}
-      <h1 className="text-lg font-bold absolute left-1/2 transform -translate-x-1/2 w-[185px] overflow-hidden whitespace-nowrap text-ellipsis">
+      <h1 className="text-center text-lg font-bold absolute left-1/2 transform -translate-x-1/2 w-[185px] overflow-hidden whitespace-nowrap text-ellipsis">
         {dynamicTitle}
       </h1>
     </div>
