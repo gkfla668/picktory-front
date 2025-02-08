@@ -7,7 +7,7 @@ interface Step1Props {
 
 const Step1 = ({ onNextStep }: Step1Props) => {
   return (
-    <div className="h-full flex flex-col items-center gap-[22px] pt-[37px]">
+    <div className="h-full flex flex-col items-center justify-center gap-[22px]">
       <div>
         <p className="font-bold text-[18px] font-nanum text-center">
           선물 보따리를 다 채우셨군요!

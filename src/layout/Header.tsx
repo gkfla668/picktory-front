@@ -109,7 +109,7 @@ const Header = () => {
 
   // 나머지 페이지: 뒤로가기 버튼 + 중앙 페이지 타이틀
   return (
-    <div className="h-[56px] flex bg-pink-100 items-center px-4 relative">
+    <div className="h-[56px] flex items-center px-4 sticky top-0 z-50">
       {/* step이 3일 때만 뒤로가기 버튼 숨기기 */}
       {!(isStepThree && isGiftbagDeliveryPage) && (
         <button
