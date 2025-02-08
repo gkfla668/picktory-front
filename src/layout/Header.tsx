@@ -27,8 +27,9 @@ const Header = () => {
   const [dynamicTitle, setDynamicTitle] = useState<string>(
     pageTitles[pathname ?? ""],
   );
-  const [isStepThree, setIsStepThree] = useState<boolean>(false);
+  const [isStepThree, setIsStepThree] = useState(false);
   const { setIsBoxEditing } = useEditBoxStore();
+  const [showSettingIcon, setShowSettingIcon] = useState(false);
 
   const isAuthPage = ["/onboarding", "/login", "/signup"].includes(
     pathname ?? "",
@@ -68,6 +69,17 @@ const Header = () => {
     }
   }, [pathname, searchParams]);
 
+  // 로컬 스토리지에서 토큰 확인
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (accessToken && refreshToken) {
+      setShowSettingIcon(true);
+    } else {
+      setShowSettingIcon(false);
+    }
+  }, []);
+
   // 메인 페이지: 로고 + 설정 아이콘
   if (isHomePage) {
     return (
@@ -76,9 +88,11 @@ const Header = () => {
           <button onClick={() => router.push("/")}>
             <Image src={LogoIcon} alt="logo" />
           </button>
-          <button onClick={() => router.push("/setting")}>
-            <Image src={SettingIcon} alt="setting" />
-          </button>
+          {showSettingIcon && (
+            <button onClick={() => router.push("/setting")}>
+              <Image src={SettingIcon} alt="setting" />
+            </button>
+          )}
         </div>
       </div>
     );
