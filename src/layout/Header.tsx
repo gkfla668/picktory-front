@@ -101,7 +101,7 @@ const Header = () => {
   // 온보딩 / 로그인 / 회원가입 페이지 / 404 페이지: 로고만
   if (isAuthPage || isNotFoundPage) {
     return (
-      <div className="h-[56px] flex  items-center justify-center">
+      <div className="h-[56px] flex items-center justify-center">
         <Image src={LogoIcon} alt="logo" />
       </div>
     );
@@ -109,7 +109,7 @@ const Header = () => {
 
   // 나머지 페이지: 뒤로가기 버튼 + 중앙 페이지 타이틀
   return (
-    <div className="h-[56px] flex items-center px-4 sticky top-0 z-50">
+    <div className="h-[56px] flex items-center px-4 sticky top-0 z-10">
       {/* step이 3일 때만 뒤로가기 버튼 숨기기 */}
       {!(isStepThree && isGiftbagDeliveryPage) && (
         <button

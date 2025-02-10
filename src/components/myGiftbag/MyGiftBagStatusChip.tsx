@@ -10,18 +10,22 @@ const MyGiftBagStatusChip = ({
   isRead: boolean;
 }) => {
   let bgColor = "bg-[#f3f4f8]";
+  let text = "임시 저장";
 
-  if (status === "답변 완료") {
+  if (status === "COMPLETED") {
     bgColor = "bg-[#f1faff]";
-  } else if (status === "답변 대기 중") {
+    text = "답변 완료";
+  } else if (status === "PUBLISHED") {
     bgColor = "bg-[#fffae6]";
-  } else if (status === "임시 저장") {
+    text = "답변 대기 중";
+  } else if (status === "DRAFT") {
     bgColor = "bg-[#f3f4f8]";
+    text = "임시 저장";
   }
 
   return (
     <div className={`rounded-[6px] ${bgColor} py-[3px] px-[8px] flex gap-1`}>
-      <p className="text-[10px] font-medium">{status}</p>
+      <p className="text-[10px] font-medium">{text}</p>
       {!isRead && <Image src={IndicatorIcon} alt="IndicatorIcon" />}
     </div>
   );
