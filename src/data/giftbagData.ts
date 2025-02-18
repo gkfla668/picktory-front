@@ -170,7 +170,7 @@ export const giftBagDetailData: MyGiftBagDetail[] = [
   {
     id: 0,
     name: "보따리 1",
-    designType: "/img/giftBag_red.svg",
+    designType: "/img/giftBag_green.svg",
     status: "PUBLISHED",
     link: "www.naver.com",
     gifts: [
@@ -183,7 +183,7 @@ export const giftBagDetailData: MyGiftBagDetail[] = [
   {
     id: 1,
     name: "보따리 2",
-    designType: "/img/giftBag_pink.svg",
+    designType: "/img/giftBag_yellow.svg",
     status: "COMPLETED",
     link: "www.naver.com",
     gifts: [
@@ -196,7 +196,7 @@ export const giftBagDetailData: MyGiftBagDetail[] = [
   {
     id: 2,
     name: "보따리 3",
-    designType: "/img/giftBag_blue.svg",
+    designType: "/img/giftBag_red.svg",
     status: "DRAFT",
     link: "www.naver.com",
     gifts: [
@@ -209,7 +209,7 @@ export const giftBagDetailData: MyGiftBagDetail[] = [
   {
     id: 3,
     name: "보따리 4",
-    designType: "/img/giftBag_yellow.svg",
+    designType: "/img/giftBag_blue.svg",
     status: "COMPLETED",
     link: "www.naver.com",
     gifts: [
@@ -222,7 +222,7 @@ export const giftBagDetailData: MyGiftBagDetail[] = [
   {
     id: 4,
     name: "보따리 5",
-    designType: "/img/giftBag_red.svg",
+    designType: "/img/giftBag_pink.svg",
     status: "PUBLISHED",
     link: "www.naver.com",
     gifts: [
@@ -235,7 +235,7 @@ export const giftBagDetailData: MyGiftBagDetail[] = [
   {
     id: 5,
     name: "보따리 6",
-    designType: "/img/giftBag_pink.svg",
+    designType: "/img/giftBag_red.svg",
     status: "COMPLETED",
     link: "www.naver.com",
     gifts: [
@@ -248,7 +248,7 @@ export const giftBagDetailData: MyGiftBagDetail[] = [
   {
     id: 6,
     name: "보따리 7",
-    designType: "/img/giftBag_blue.svg",
+    designType: "/img/giftBag_green.svg",
     status: "DRAFT",
     link: "www.naver.com",
     gifts: [
