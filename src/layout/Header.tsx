@@ -5,7 +5,10 @@ import Image from "next/image";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 import { useEditBoxStore } from "@/stores/gift-upload/useStore";
-import { useIsOpenDetailGiftBoxStore } from "@/stores/giftbag/useStore";
+import {
+  useGiftBagStore,
+  useIsOpenDetailGiftBoxStore,
+} from "@/stores/giftbag/useStore";
 
 import { Button } from "@/components/ui/button";
 
@@ -48,6 +51,7 @@ const Header = () => {
   const isGiftbagAddPage = pathname === "/giftbag/add";
 
   const step = searchParams?.get("step");
+  const { giftBagName } = useGiftBagStore();
 
   useEffect(() => {
     setIsStepThree(step === "3");
@@ -59,11 +63,14 @@ const Header = () => {
   }, [pathname]);
 
   useEffect(() => {
-    const title = searchParams?.get("title");
-
-    if (title) {
-      setDynamicTitle(title);
+    if (giftBagName && pathname === "/giftbag/add") {
+      setDynamicTitle(giftBagName);
     } else {
+      const title = searchParams?.get("title");
+
+      if (title) {
+        setDynamicTitle(title);
+      }
       // 동적 경로 처리
       if (pathname?.match(/^\/giftbag\/detail\/[^/]+\/answer$/)) {
         setDynamicTitle("보따리 결과");
@@ -80,7 +87,7 @@ const Header = () => {
         }
       }
     }
-  }, [pathname, searchParams]);
+  }, [giftBagName, pathname, searchParams]);
 
   // 로컬 스토리지에서 토큰 확인
   useEffect(() => {
@@ -105,9 +112,6 @@ const Header = () => {
     !pathname.includes("delivery") &&
     !pathname.includes("name") &&
     !pathname.includes("select");
-  /*const isReceiveGiftbagStep1or2 =
-    isReceiveGiftbagPage && (step === "1" || step === "2");
-  const isReceiveGiftbagStep3 = isReceiveGiftbagPage && step === "3";*/
 
   if (isGiftbagDetailStepTwo && isOpenDetailGiftBox) {
     return (
@@ -128,19 +132,6 @@ const Header = () => {
       </div>
     );
   }
-
-  /* 상대방이 받아보는 페이지(step=3) → Logo 중앙, X 아이콘 오른쪽
-  if (isReceiveGiftbagStep3) {
-    return (
-      <div className="bg-white h-[56px] flex items-center justify-between px-4">
-        <div className="w-[24px]"></div>
-        <Image src={LogoIcon} alt="logo" />
-        <button onClick={() => window.close()}>
-          <Image src="/icons/close.svg" alt="close" width={24} height={24} />
-        </button>
-      </div>
-    );
-  }*/
 
   // 메인 페이지: 로고 + 설정 아이콘
   if (isHomePage) {
