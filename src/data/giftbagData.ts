@@ -12,7 +12,7 @@ export const giftBagData: MyGiftBag[] = [
   {
     id: 0,
     name: "보따리 1",
-    designType: "/img/giftBag_red.svg",
+    designType: "/img/giftBag_green.svg",
     isRead: true,
     status: "PUBLISHED",
     updatedAt: new Date("2025-02-07"),
@@ -20,7 +20,7 @@ export const giftBagData: MyGiftBag[] = [
   {
     id: 1,
     name: "보따리 2",
-    designType: "/img/giftBag_pink.svg",
+    designType: "/img/giftBag_yellow.svg",
     isRead: true,
     status: "COMPLETED",
     updatedAt: new Date("2025-02-03"),
@@ -28,7 +28,7 @@ export const giftBagData: MyGiftBag[] = [
   {
     id: 2,
     name: "보따리 3",
-    designType: "/img/giftBag_blue.svg",
+    designType: "/img/giftBag_red.svg",
     isRead: true,
     status: "DRAFT",
     updatedAt: new Date("2025-01-11"),
@@ -36,7 +36,7 @@ export const giftBagData: MyGiftBag[] = [
   {
     id: 3,
     name: "보따리 4",
-    designType: "/img/giftBag_yellow.svg",
+    designType: "/img/giftBag_blue.svg",
     isRead: false,
     status: "COMPLETED",
     updatedAt: new Date("2025-01-05"),
@@ -44,7 +44,7 @@ export const giftBagData: MyGiftBag[] = [
   {
     id: 4,
     name: "보따리 5",
-    designType: "/img/giftBag_red.svg",
+    designType: "/img/giftBag_pink.svg",
     isRead: true,
     status: "PUBLISHED",
     updatedAt: new Date("2025-02-07"),
@@ -52,7 +52,7 @@ export const giftBagData: MyGiftBag[] = [
   {
     id: 5,
     name: "보따리 6",
-    designType: "/img/giftBag_pink.svg",
+    designType: "/img/giftBag_red.svg",
     isRead: true,
     status: "COMPLETED",
     updatedAt: new Date("2025-02-03"),
@@ -60,7 +60,7 @@ export const giftBagData: MyGiftBag[] = [
   {
     id: 6,
     name: "보따리 7",
-    designType: "/img/giftBag_blue.svg",
+    designType: "/img/giftBag_green.svg",
     isRead: true,
     status: "DRAFT",
     updatedAt: new Date("2025-01-11"),
