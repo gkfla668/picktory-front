@@ -6,14 +6,12 @@ import Link from "next/link";
 
 import MyGiftBagCard from "@/components/myGiftbag/MyGiftBagCard";
 import CheckIcon from "/public/icons/check.svg";
-
 import { giftBagData } from "@/data/giftbagData";
 
 const Page = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
-  // 임시 저장된 보따리 필터링
   const filteredBottariData = giftBagData.filter(
     (giftBag) => !isChecked || giftBag.status === "DRAFT",
   );
@@ -42,7 +40,7 @@ const Page = () => {
         {isEdit ? "완료" : "편집"}
       </button>
       <section
-        className="w-full grid grid-cols-2 grid-rows-[repeat(6,_1fr)] gap-[13px] h-full overflow-y-auto"
+        className="w-full grid grid-cols-2 auto-rows gap-[13px] overflow-y-auto pb-4"
         style={{ scrollbarWidth: "none" }}
       >
         {filteredBottariData.map((bottari) => (
