@@ -27,7 +27,7 @@ const MyGiftBagCard = ({
   };
 
   return (
-    <div className="border-[1px] box-border border-gray-200 px-2 pb-[22px] pt-[8px] rounded-[12px] cursor-pointer flex flex-col justify-center items-center relative">
+    <div className="bg-white border-[1px] box-border border-gray-200 px-2 pb-[22px] pt-[8px] rounded-[12px] cursor-pointer flex flex-col justify-center items-center relative hover:bg-gray-100">
       <div className="w-full flex flex-start">
         <MyGiftBagStatusChip status={status} isRead={is_read} />
       </div>
