@@ -11,7 +11,7 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
   return (
     <div className="w-full h-full flex flex-col justify-center items-center gap-[37px] bg-pink-50">
       <div className="flex flex-col gap-4">
-        <p className="text-center text-lg font-bold font-nanum">
+        <p className="text-center text-lg font-bold font-nanum tracking-[-0.03em]">
           내가 고른 선물, 상대방도 좋아할까?
         </p>
         <p className="text-center text-gray-500 text-xs font-medium">

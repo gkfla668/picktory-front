@@ -84,7 +84,7 @@ const Step2 = () => {
           <section className="flex flex-col items-center ">
             <div className="flex flex-col items-center ">
               <div className="mb-[3px] ">
-                <p className="font-nanum text-lg font-bold text-center">
+                <p className="font-nanum text-lg font-bold text-center tracking-[-0.03em]">
                   {deliveryCharacterData[character].title
                     .split("\n")
                     .map((line, index) => (
@@ -104,7 +104,7 @@ const Step2 = () => {
                 className="mb-[26px] mt-[35px]"
               />
               <div className="mb-[17px] px-[30px] py-[1px] bg-white rounded-[30px]">
-                <h1 className="text-gray-800 text-center text-lg font-bold font-nanum mt-1">
+                <h1 className="text-gray-800 text-center text-lg font-bold font-nanum mt-1 tracking-[-3%]">
                   {character || "포리"}
                 </h1>
               </div>

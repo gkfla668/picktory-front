@@ -39,7 +39,7 @@ const Step1 = ({ delivery, color }: Step1Props) => {
       />
       <div className="h-full flex flex-col gap-[90px] justify-center items-center relative">
         <div className="flex flex-col justify-center items-center gap-8">
-          <p className="text-lg font-bold font-nanum text-center">
+          <p className="tracking-[-0.03em] text-lg font-bold font-nanum text-center">
             {displayText.split("\n").map((line, index) => (
               <span key={index}>
                 {line}
@@ -55,7 +55,7 @@ const Step1 = ({ delivery, color }: Step1Props) => {
               height={230}
             />
           </div>
-          <p className="text-center text-sm font-nanum text-gray-700 pt-[2px]">
+          <p className="text-center text-sm tracking-[-2%] font-nanum text-gray-700 pt-[2px]">
             정성껏 고른 선물 후보들이 담긴 보따리예요. <br /> 마음에 드는 선물을
             배달부에게 살짝 알려주세요!
           </p>

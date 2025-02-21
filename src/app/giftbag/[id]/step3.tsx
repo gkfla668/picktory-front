@@ -45,8 +45,10 @@ const Step3 = ({ delivery }: Step3Props) => {
           />
         </div>
         <div className="flex flex-col gap-[13px] text-center">
-          <p className="text-lg font-bold font-nanum">{messageData.title}</p>
-          <p className="text-sm font-nanum text-gray-700 pt-[2px]">
+          <p className="text-lg font-bold font-nanum tracking-[-0.03em]">
+            {messageData.title}
+          </p>
+          <p className="text-sm font-nanum text-gray-700 pt-[2px] tracking-[-0.02em]">
             {messageData.description.split("\n").map((line, index) => (
               <span key={index}>
                 {line}

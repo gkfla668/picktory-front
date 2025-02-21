@@ -53,10 +53,10 @@ const Step3 = () => {
           style={{ width: "200px", height: "200px" }}
         />
         <div className="flex flex-col gap-[10px]">
-          <h1 className="text-gray-900 text-lg font-bold font-nanum">
+          <h1 className="text-gray-900 text-lg font-bold font-nanum tracking-[-0.03em]">
             이제 보따리를 배달할 차례에요!
           </h1>
-          <p className="text-gray-700 text-sm text-center font-nanum">
+          <p className="text-gray-700 text-sm text-center font-nanum tracking-[-0.03em]">
             선물 받으실 분에게 링크를 전달해볼까요? <br />그 이후는 저에게
             맡겨주세요!
           </p>

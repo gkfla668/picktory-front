@@ -44,7 +44,7 @@ const Page = () => {
           className="h-full"
         >
           <div className="w-full h-full bg-pink-50">
-            <p className="text-lg text-center font-bold font-nanum pt-[42px] flex justify-center items-center h-full pb-[487px]">
+            <p className="text-lg text-center font-bold tracking-[-0.03em] font-nanum pt-[42px] flex justify-center items-center h-full pb-[487px]">
               선물 보따리를 안전하게 보관하기 위해 <br />
               로그인이 필요해요!
             </p>
