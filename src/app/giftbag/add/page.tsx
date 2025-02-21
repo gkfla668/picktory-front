@@ -77,7 +77,7 @@ const Page = () => {
     <div className="h-full bg-pink-50 px-4">
       <div className="h-full flex flex-col items-center justify-center relative">
         <div className="flex flex-col gap-7 w-[300px] items-center">
-          <div className="absolute top-4">
+          <div className="absolute top-[10px]">
             <Chip text={`채워진 선물박스 ${filledGiftCount}개`} width="126px" />
           </div>
           <GiftList value={giftBoxes} />
