@@ -1,16 +1,19 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import Link from "next/link";
+
 import {
+  DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
 } from "../ui/drawer";
 import LinkButton from "../common/LinkButton";
-import Link from "next/link";
+import Card from "../common/Card";
+
+import { Button } from "@/components/ui/button";
 import { useEditBoxStore } from "@/stores/gift-upload/useStore";
 import { GiftBox } from "@/types/giftbag/types";
-import Card from "../common/Card";
 
 interface GiftBoxDrawerProps {
   handleEmptyButton: () => void;
@@ -34,11 +37,21 @@ const GiftBoxDrawer = ({
   return (
     <DrawerContent>
       <DrawerHeader>
-        <DrawerTitle />
-        <DrawerDescription />
-        <p className="text-base font-medium text-center">채워진 선물 정보</p>
+        <>
+          <DrawerTitle className="relative text-base font-medium text-center">
+            채워진 선물 정보
+            <DrawerClose className="absolute top-0 right-4">
+              <Image
+                src="/icons/close.svg"
+                alt="close"
+                width={24}
+                height={24}
+              />
+            </DrawerClose>
+          </DrawerTitle>
+        </>
       </DrawerHeader>
-      <div className="flex flex-col gap-[22px] px-[18px] py-[22px]">
+      <div className="flex flex-col gap-[22px] px-[18px] pt-[26px] pb-5">
         {isConfirmingEmpty ? (
           <div className="flex flex-col items-center justify-center gap-5">
             <div className="mt-2 mb-5">
