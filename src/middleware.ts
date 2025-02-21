@@ -26,7 +26,15 @@ const publicRoutes = ["/auth/login"];
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("accessToken");
   const currentPath = request.nextUrl.pathname;
-  console.log(token);
+
+  // 루트 경로("/")에 접근 시 로그인 여부에 따라 리다이렉트 처리
+  if (currentPath === "/") {
+    if (token) {
+      return NextResponse.redirect(new URL("/home", request.url));
+    } else {
+      return NextResponse.redirect(new URL("/auth/login", request.url));
+    }
+  }
 
   // 로그아웃 상태
   if (
