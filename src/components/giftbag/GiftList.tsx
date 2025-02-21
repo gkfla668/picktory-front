@@ -114,7 +114,7 @@ const GiftList = ({ value }: GiftListProps) => {
                         <TooltipContent
                           side="bottom"
                           align="center"
-                          className="bg-white text-black font-nanum -mt-1"
+                          className="bg-white text-black font-nanum -mt-1 py-2 px-4 text-[13px] font-bold border-[1px] border-gray-800"
                         >
                           사진으로 간단하게 <br /> 선물박스를 채워볼까요?
                         </TooltipContent>
