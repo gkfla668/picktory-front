@@ -1,4 +1,4 @@
-"use client"; // 클라이언트 컴포넌트로 선언
+"use client";
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -18,13 +18,13 @@ import {
 } from "@/stores/giftbag/useStore";
 
 import { Button } from "@/components/ui/button";
-
-import LogoIcon from "../../public/icons/logo.svg";
-import SettingIcon from "../../public/icons/setting_large.svg";
-import ArrowLeftIcon from "../../public/icons/arrow_left_large.svg";
 import { createGiftBag, updateGiftBag } from "@/api/giftbag/api";
 import { toast } from "@/hooks/use-toast";
 import { GiftBox } from "@/types/giftbag/types";
+
+import LogoIcon from "/public/icons/logo.svg";
+import SettingIcon from "/public/icons/setting_large.svg";
+import ArrowLeftIcon from "/public/icons/arrow_left_large.svg";
 
 // 정적 title 관리
 const pageTitles: { [key: string]: string } = {
@@ -293,7 +293,7 @@ const Header = () => {
           variant="ghost"
           className="flex justify-start"
         >
-          <Image src={ArrowLeftIcon} alt="back" />
+          <Image src={ArrowLeftIcon} alt="back" width={24} height={24} />
         </Button>
       )}
       <h1 className="text-center text-lg font-medium w-[185px] overflow-hidden whitespace-nowrap text-ellipsis absolute left-1/2 -translate-x-1/2">
