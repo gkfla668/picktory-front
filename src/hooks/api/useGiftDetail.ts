@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
+import { getCookie } from "cookies-next";
 
 const fetchGiftDetail = async (giftId: number, giftBagId: number) => {
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = getCookie("accessToken");
 
   const response = await fetch(`/api/v1/bundles/${giftBagId}/gifts/${giftId}`, {
     method: "GET",

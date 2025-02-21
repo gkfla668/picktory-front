@@ -1,7 +1,10 @@
 import { GIFTBAG_COLORS } from "@/constants/constants";
 import { GiftBox, ReceiveGiftBag } from "@/types/giftbag/types";
+import { getCookie } from "cookies-next";
 
 /** 보따리 생성 api */
+
+const accessToken = getCookie("accessToken");
 
 export const createGiftBag = async ({
   giftBagName,
@@ -16,7 +19,7 @@ export const createGiftBag = async ({
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify({
       name: giftBagName,
@@ -73,7 +76,7 @@ export const updateGiftBag = async (giftBoxes: GiftBox[]) => {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify(requestBody),
   });
@@ -128,7 +131,7 @@ export const fetchGiftResults = async (id: string): Promise<GiftData[]> => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 

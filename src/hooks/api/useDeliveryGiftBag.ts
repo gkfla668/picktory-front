@@ -1,5 +1,6 @@
 import { DeliveryCharacterAPIType } from "@/types/giftbag/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { getCookie } from 'cookies-next';
 
 export interface PutDeliveryPayload {
   giftBagId: string;
@@ -14,7 +15,7 @@ const putDelivery = async ({
   giftBagId,
   deliveryCharacterType,
 }: PutDeliveryPayload): Promise<PutDeliveryResponse> => {
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = getCookie("accessToken");
 
   const response = await fetch(`/api/v1/bundles/${giftBagId}/delivery`, {
     method: "PUT",

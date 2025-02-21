@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { getCookie } from "cookies-next";
 
 const deleteGiftBag = async (giftBagId: number) => {
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = getCookie("accessToken");
 
   const response = await fetch(`/api/v1/bundles/${giftBagId}`, {
     method: "DELETE",

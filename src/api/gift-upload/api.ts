@@ -1,3 +1,5 @@
+import { getCookie } from "cookies-next";
+
 {
   /** 이미지 업로드 API */
 }
@@ -5,11 +7,13 @@
 export const uploadGiftImages = async (
   formData: FormData,
 ): Promise<string[]> => {
+  const accessToken = getCookie("accessToken");
+
   const response = await fetch("/api/v1/gifts/images/upload", {
     method: "POST",
     body: formData,
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 

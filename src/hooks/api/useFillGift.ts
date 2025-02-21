@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
+import { getCookie } from "cookies-next";
 
 const fetchFillGift = async (giftBagId: number) => {
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = getCookie("accessToken");
 
   if (!giftBagId) return;
 
