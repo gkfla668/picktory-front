@@ -78,14 +78,21 @@ const Step2 = () => {
   };
 
   return (
-    <>
+    <div className="h-full bg-[url('/img/background_union.svg')] bg-cover bg-center">
       {character && (
         <div className="h-[calc(100%-52px)] w-full flex flex-col items-center justify-center gap-7">
           <section className="flex flex-col items-center ">
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center ">
               <div className="mb-[3px] ">
-                <p className="font-nanum text-xs font-bold">
-                  {deliveryCharacterData[character].title}
+                <p className="font-nanum text-lg font-bold text-center">
+                  {deliveryCharacterData[character].title
+                    .split("\n")
+                    .map((line, index) => (
+                      <p key={index}>
+                        {line}
+                        <br />
+                      </p>
+                    ))}
                 </p>
               </div>
               <Image
@@ -94,15 +101,15 @@ const Step2 = () => {
                 width={200}
                 height={200}
                 style={{ width: "200px", height: "200px" }}
-                className="mb-[22px]"
+                className="mb-[26px] mt-[35px]"
               />
-              <div className="mb-7">
-                <h1 className="text-gray-800 text-center text-2xl font-bold font-nanum">
+              <div className="mb-[17px] px-[30px] py-[1px] bg-white rounded-[30px]">
+                <h1 className="text-gray-800 text-center text-lg font-bold font-nanum mt-1">
                   {character || "포리"}
                 </h1>
               </div>
               <div>
-                <p className="text-xs text-gray-700 font-medium text-center">
+                <p className="text-[15px] text-gray-700 font-medium text-center">
                   {deliveryCharacterData[character].description
                     .split("\n")
                     .map((line, index) => (
@@ -122,7 +129,7 @@ const Step2 = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
