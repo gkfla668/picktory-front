@@ -11,7 +11,7 @@ const protectedRoutes = [
   "/giftbag/add",
   "/giftbag/name",
   "/giftbag/select",
-  "gift-upload",
+  "/gift-upload",
   "/giftbag/delivery",
   "/setting",
   /^\/giftbag\/\d+$/, // /giftbag/[id]
