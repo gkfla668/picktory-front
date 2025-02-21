@@ -2,10 +2,13 @@
 
 import Image from "next/image";
 
+import IndicatorIcon from "/public/icons/indicator.svg";
+
 interface CardProps {
   img: string;
   size: "small" | "medium";
   type?: "design" | "image";
+  isRead?: boolean;
   isActive?: boolean;
   onClick?: () => void;
   noHoverStyle?: boolean;
@@ -17,6 +20,7 @@ const Card = ({
   img,
   size,
   type,
+  isRead,
   isActive,
   onClick,
   noHoverStyle,
@@ -41,7 +45,7 @@ const Card = ({
 
   return (
     <div
-      className={`flex justify-center border-[1.4px] items-center ${borderColorClasses} ${sizeClasses} rounded-xl box-border bg-gray-50 ${cursorClass} ${paddingSize} ${activeClass} ${hoverClass} `}
+      className={`relative flex justify-center border-[1.4px] items-center ${borderColorClasses} ${sizeClasses} rounded-xl box-border bg-gray-50 ${cursorClass} ${paddingSize} ${activeClass} ${hoverClass} `}
       onClick={onClick}
     >
       <Image
@@ -51,6 +55,9 @@ const Card = ({
         height={imageSize}
         className={`rounded-xl object-cover ${type && type === "image" ? "w-full h-full" : ""}`}
       />
+      <div className="absolute top-2 right-2">
+        {isRead === false && <Image src={IndicatorIcon} alt="IndicatorIcon" />}
+      </div>
     </div>
   );
 };

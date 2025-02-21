@@ -4,9 +4,7 @@ import React from "react";
 import { useParams, useRouter } from "next/navigation";
 
 import Card from "@/components/common/Card";
-
 import { FilledGiftListPreview, MyGiftBagPreview } from "@/types/giftbag/types";
-
 import { DESIGN_TYPE_MAP } from "@/constants/constants";
 
 interface MyCardListProps {
@@ -34,7 +32,7 @@ const MyCardList = ({ type, data, size }: MyCardListProps) => {
   };
 
   return (
-    <div className="flex gap-[12px] whitespace-nowrap">
+    <div className="flex gap-[13px] whitespace-nowrap">
       {data &&
         data.map((item, index) => {
           const giftBagDesignURL =
@@ -45,6 +43,11 @@ const MyCardList = ({ type, data, size }: MyCardListProps) => {
               key={index}
               type={type}
               size={size}
+              isRead={
+                "isRead" in item
+                  ? (item.isRead as boolean | undefined)
+                  : undefined
+              }
               img={
                 hasThumbnailField(item)
                   ? item.thumbnail
