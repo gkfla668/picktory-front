@@ -25,7 +25,7 @@ const CustomTextArea = ({
         onChange={(e) => onTextChange(e)}
         disabled={disable}
       />
-      <span className="absolute bottom-2 right-2 text-gray-400 text-[10px]">
+      <span className="absolute bottom-2 right-3 text-gray-400 text-[10px]">
         {text.length} / {maxLength}
       </span>
     </div>

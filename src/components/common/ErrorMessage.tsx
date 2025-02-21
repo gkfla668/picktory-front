@@ -3,7 +3,7 @@ interface ErrorMessageProps {
 }
 
 const ErrorMessage = ({ message }: ErrorMessageProps) => {
-  return <p className="text-symantic-negative text-xs mt-1">{message}</p>;
+  return <p className="text-symantic-negative text-xs">{message}</p>;
 };
 
 export default ErrorMessage;
