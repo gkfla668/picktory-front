@@ -50,7 +50,7 @@ const Header = () => {
   );
   const [isStepThree, setIsStepThree] = useState(false);
   const { setIsBoxEditing } = useEditBoxStore();
-  const [showSettingIcon, setShowSettingIcon] = useState(false);
+
   const { isOpenDetailGiftBox, setIsOpenDetailGiftBox } =
     useIsOpenDetailGiftBoxStore();
 
@@ -106,17 +106,6 @@ const Header = () => {
       }
     }
   }, [giftBagName, giftId, giftName, pathname, searchParams]);
-
-  // 로컬 스토리지에서 토큰 확인
-  useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-    const refreshToken = localStorage.getItem("refreshToken");
-    if (accessToken && refreshToken) {
-      setShowSettingIcon(true);
-    } else {
-      setShowSettingIcon(false);
-    }
-  }, []);
 
   const isGiftbagDetailStepTwo =
     pathname?.startsWith("/giftbag/") && searchParams?.get("step") === "2";
@@ -257,11 +246,9 @@ const Header = () => {
           <button onClick={() => router.push("/")}>
             <Image src={LogoIcon} alt="logo" />
           </button>
-          {showSettingIcon && (
-            <button onClick={() => router.push("/setting")}>
-              <Image src={SettingIcon} alt="setting" />
-            </button>
-          )}
+          <button onClick={() => router.push("/setting")}>
+            <Image src={SettingIcon} alt="setting" />
+          </button>
         </div>
       </div>
     );
