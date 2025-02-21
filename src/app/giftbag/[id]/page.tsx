@@ -48,7 +48,7 @@ const Page = () => {
       {step === "1" && (
         <Step1
           delivery={giftBag.delivery_character_type}
-          color={giftBag.design_type}
+          color={giftBag.design_type.toLowerCase()}
         />
       )}
       {step === "2" && <Step2 gifts={giftBag.gifts} />}
