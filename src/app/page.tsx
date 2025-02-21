@@ -13,13 +13,24 @@ export default function Home() {
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-    if (!token) {
-      router.push("/auth/login");
-    } else {
+
+    if (token) {
       setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
     }
     setIsLoading(false);
-  }, [router]);
+  }, []); 
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (isLoggedIn) {
+        router.push("/home");
+      } else {
+        router.push("/auth/login");
+      }
+    }
+  }, [isLoggedIn, isLoading, router]); 
 
   if (isLoading)
     return (
@@ -28,5 +39,5 @@ export default function Home() {
       </div>
     );
 
-  return <>{isLoggedIn ? router.push("/home") : router.push("/auth/login")}</>;
+  return null;
 }
