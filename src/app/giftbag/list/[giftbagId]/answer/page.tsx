@@ -9,13 +9,13 @@ import Card from "@/components/common/Card";
 import AnswerChip from "@/components/giftbag/AnswerChip";
 import { Button } from "@/components/ui/button";
 
-import ArrowIcon from "../../../../../../public/icons/arrow_right_medium.svg";
+import ArrowIcon from "/public/icons/arrow_right_medium.svg";
 import { fetchGiftResults, GiftData } from "@/api/giftbag/api";
 import Loading from "@/components/common/Loading";
 import { GIFT_ANSWER_MAP } from "@/constants/constants";
 
 const Page = () => {
-  const { giftbagId } = useParams() as { giftbagId: string };
+  const { giftBagId } = useParams() as { giftBagId: string };
   const router = useRouter();
 
   const {
@@ -23,9 +23,9 @@ const Page = () => {
     isPending,
     isError,
   } = useQuery({
-    queryKey: ["giftResults", giftbagId],
-    queryFn: () => fetchGiftResults(giftbagId as string),
-    enabled: !!giftbagId,
+    queryKey: ["giftResults", giftBagId],
+    queryFn: () => fetchGiftResults(giftBagId as string),
+    enabled: !!giftBagId,
   });
 
   if (isPending)
@@ -62,10 +62,10 @@ const Page = () => {
         style={{ scrollbarWidth: "none" }}
       >
         {Object.entries(groupedGifts).map(([responseTag, gifts], idx) => (
-          <div key={responseTag} className="flex flex-col gap-6">
+          <div key={responseTag} className="flex flex-col gap-4">
             <div className="mt-1">
               {idx !== 0 && (
-                <hr className="my-4 border-gray-100 border-[1px] mb-[26px]" />
+                <hr className="border-gray-100 border-[1px] my-[26px]" />
               )}
               {idx === 0 && <div className="mt-[26px]" />}
               <AnswerChip text={GIFT_ANSWER_MAP[responseTag] || "기타"} />
@@ -76,7 +76,7 @@ const Page = () => {
                   className="flex items-center h-[70px] justify-between relative"
                   key={index}
                 >
-                  <div className="flex gap-4 w-full">
+                  <div className="flex gap-3 w-full">
                     <Card
                       img={gift.thumbnail}
                       size="small"
@@ -119,7 +119,7 @@ const Page = () => {
                     variant="ghost"
                     className="absolute left-44 top-1/2 transform -translate-y-1/2"
                     onClick={() =>
-                      router.push(`/giftbag/list/${giftbagId}/${gift.id}`)
+                      router.push(`/giftbag/list/${giftBagId}/${gift.id}`)
                     }
                   >
                     <Image src={ArrowIcon} alt="arrowIcon" />
