@@ -152,9 +152,9 @@ const GiftForm = () => {
   return (
     <div className="px-4 flex flex-col h-full overflow-y-auto">
       <div className="flex flex-col flex-grow gap-[50px] mt-[18px] pb-[70px]">
-        <div>
+        <div className="flex flex-col gap-[22px]">
           <div
-            className="w-full overflow-x-auto px-4 mb-[22px] min-w-full"
+            className="w-full overflow-x-auto min-w-full flex flex-col gap-2"
             style={{ scrollbarWidth: "none" }}
           >
             <UploadImageList
@@ -166,7 +166,7 @@ const GiftForm = () => {
               <ErrorMessage message="필수 입력 정보입니다." />
             )}
           </div>
-          <div className="flex flex-col px-1">
+          <div className="flex flex-col gap-2">
             <CharacterCountInput
               maxLength={GIFT_NAME_MAX_LENGTH}
               value={giftName}
