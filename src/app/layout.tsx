@@ -9,6 +9,7 @@ import Header from "@/layout/Header";
 import { Toaster } from "@/components/ui/toaster";
 import PageTransition from "@/app/PageTransition";
 import { Providers } from "./providers";
+import VhFix from "./vhFix";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -55,12 +56,7 @@ export default function RootLayout({
             <PageTransition>
               <Header />
               <Providers>
-                <div
-                  className={`flex-grow ${bgColor}`}
-                  style={{ height: "calc(100vh - 56px)" }}
-                >
-                  {children}
-                </div>
+                <VhFix bgColor={bgColor}>{children}</VhFix>
                 <Toaster />
               </Providers>
             </PageTransition>

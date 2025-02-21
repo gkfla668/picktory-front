@@ -76,3 +76,11 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+:root {
+  --vh: 1vh;
+}
+
+.full-height {
+  height: calc(var(--vh, 1vh) * 100);
+}
