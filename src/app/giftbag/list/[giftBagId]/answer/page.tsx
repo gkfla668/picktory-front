@@ -89,9 +89,9 @@ const Page = () => {
                       <div className="text-[15px] font-medium max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap">
                         {gift.name}
                       </div>
-                      {gift.link ? (
+                      {gift.purchaseUrl ? (
                         <Link
-                          href={gift.link}
+                          href={gift.purchaseUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
