@@ -112,3 +112,22 @@ export const useIsUploadAnswerStore = create<IsUploadAnswerStore>()(
     },
   ),
 );
+
+interface IsClickedUpdateFilledButtonStore {
+  isClickedUpdateFilledButton: boolean;
+  setIsClickedUpdateFilledButton: (isClicked: boolean) => void;
+}
+
+export const useIsClickedUpdateFilledButton =
+  create<IsClickedUpdateFilledButtonStore>()(
+    persist(
+      (set) => ({
+        isClickedUpdateFilledButton: false,
+        setIsClickedUpdateFilledButton: (isClicked) =>
+          set({ isClickedUpdateFilledButton: isClicked }),
+      }),
+      {
+        name: "cilcked-updateFilledButton",
+      },
+    ),
+  );

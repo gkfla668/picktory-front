@@ -13,6 +13,7 @@ import { useEditBoxStore, useGiftStore } from "@/stores/gift-upload/useStore";
 import {
   useGiftBagStore,
   useGiftNameStore,
+  useIsClickedUpdateFilledButton,
   useIsOpenDetailGiftBoxStore,
   useSelectedBagStore,
 } from "@/stores/giftbag/useStore";
@@ -128,6 +129,7 @@ const Header = () => {
   const [showTempSave, setShowTempSave] = useState(false);
 
   const giftBagId = sessionStorage.getItem("giftBagId");
+  const { isClickedUpdateFilledButton } = useIsClickedUpdateFilledButton();
 
   useEffect(() => {
     const filledCount = giftBoxes.filter((box) => box && box.filled).length;
@@ -239,7 +241,12 @@ const Header = () => {
             if (isGiftUploadPage) {
               setIsBoxEditing(false);
             }
-            if (giftBagId && pathname === "/giftbag/add") router.push("/home");
+            if (
+              giftBagId &&
+              pathname === "/giftbag/add" &&
+              !isClickedUpdateFilledButton
+            )
+              router.push("/home");
             else router.back();
           }}
           variant="ghost"

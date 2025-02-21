@@ -14,6 +14,7 @@ import { useGiftStore } from "@/stores/gift-upload/useStore";
 import {
   useSelectedBagStore,
   useGiftBagStore,
+  useIsClickedUpdateFilledButton,
 } from "@/stores/giftbag/useStore";
 import { useEffect } from "react";
 
@@ -23,6 +24,7 @@ const Page = () => {
 
   const { setSelectedBagIndex } = useSelectedBagStore();
   const { setGiftBagName } = useGiftBagStore();
+  const { setIsClickedUpdateFilledButton } = useIsClickedUpdateFilledButton();
 
   const resetStore = () => {
     //추후 util로 빼야함
@@ -42,6 +44,7 @@ const Page = () => {
     setSelectedBagIndex(0);
     setGiftBagName("");
     sessionStorage.removeItem("giftBagId");
+    setIsClickedUpdateFilledButton(false);
   };
 
   useEffect(() => {
