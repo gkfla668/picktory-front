@@ -127,6 +127,8 @@ const Header = () => {
   const { selectedBagIndex } = useSelectedBagStore();
   const [showTempSave, setShowTempSave] = useState(false);
 
+  const giftBagId = sessionStorage.getItem("giftBagId");
+
   useEffect(() => {
     const filledCount = giftBoxes.filter((box) => box && box.filled).length;
     setShowTempSave(filledCount >= 2);
@@ -237,7 +239,8 @@ const Header = () => {
             if (isGiftUploadPage) {
               setIsBoxEditing(false);
             }
-            router.back();
+            if (giftBagId && pathname === "/giftbag/add") router.push("/home");
+            else router.back();
           }}
           variant="ghost"
           className="flex justify-start"
