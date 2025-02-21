@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 import { useMutation } from "@tanstack/react-query";
+import { setCookie } from "cookies-next";
 import Loading from "@/components/common/Loading";
 import { toast } from "@/hooks/use-toast";
 
@@ -36,9 +37,12 @@ const Page = () => {
       }
     },
     onSuccess: (data) => {
-      // 토큰 저장
-      localStorage.setItem("accessToken", data.result.accessToken);
-      localStorage.setItem("refreshToken", data.result.refreshToken);
+      const accessToken = data.result.accessToken;
+      const refreshToken = data.result.refreshToken;
+
+      // 쿠키에 토큰 저장
+      setCookie("accessToken", accessToken);
+      setCookie("refreshToken", refreshToken);
 
       toast({
         title: "로그인 성공",
