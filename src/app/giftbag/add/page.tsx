@@ -11,7 +11,6 @@ import {
   useGiftBagStore,
 } from "@/stores/giftbag/useStore";
 import { useMutation } from "@tanstack/react-query";
-import { useState, useEffect } from "react";
 import { GiftBox } from "@/types/giftbag/types";
 
 const Page = () => {
@@ -24,17 +23,7 @@ const Page = () => {
   const { selectedBagIndex } = useSelectedBagStore();
   const { giftBagName } = useGiftBagStore();
 
-  const [giftBagId, setGiftBagId] = useState<string | null>(
-    () => sessionStorage.getItem("giftBagId") || null,
-  );
-
-  useEffect(() => {
-    if (giftBagId) {
-      sessionStorage.setItem("giftBagId", giftBagId);
-    }
-  }, [giftBagId]);
-
-  const mutation = useMutation({
+  const createMutation = useMutation({
     mutationFn: () =>
       createGiftBag({
         giftBagName,
@@ -43,7 +32,7 @@ const Page = () => {
       }),
     onSuccess: (res) => {
       if (res?.id) {
-        setGiftBagId(res.id);
+        sessionStorage.setItem("giftBagId", res.id);
       }
 
       if (res?.gifts?.length) {
@@ -54,19 +43,25 @@ const Page = () => {
     },
   });
 
+  const updateMutation = useMutation({
+    mutationFn: () => updateGiftBag(giftBoxes),
+    onSuccess: (res) => {
+      res.result.gifts.forEach((gift: GiftBox, index: number) => {
+        useGiftStore.getState().updateGiftBox(index, { id: gift.id });
+      });
+    },
+  });
+
   const handleClickButton = async () => {
     try {
-      if (giftBagId) {
-        const res = await updateGiftBag(giftBoxes);
+      const giftBagId = sessionStorage.getItem("giftBagId");
 
-        if (res?.gifts?.length) {
-          res.gifts.forEach((gift: GiftBox, index: number) => {
-            useGiftStore.getState().updateGiftBox(index, { id: gift.id });
-          });
-        }
+      if (!giftBagId) {
+        await createMutation.mutateAsync();
       } else {
-        await mutation.mutateAsync();
+        await updateMutation.mutateAsync();
       }
+
       router.push("/giftbag/delivery?step=1");
     } catch (error) {
       alert(`보따리 저장에 실패했습니다. ${error}`);
