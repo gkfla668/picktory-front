@@ -1,5 +1,7 @@
+import { deleteCookie } from "cookies-next";
+
 /** accessToken, refreshToken 삭제 */
 export const deleteToken = () => {
-  localStorage.removeItem("accessToken");
-  localStorage.removeItem("refreshToken");
+  deleteCookie("accessToken", { path: "/" });
+  deleteCookie("refreshToken", { path: "/" });
 };
