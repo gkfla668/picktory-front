@@ -41,6 +41,7 @@ const Page = () => {
 
     setSelectedBagIndex(0);
     setGiftBagName("");
+    sessionStorage.removeItem("giftBagId");
   };
 
   useEffect(() => {

@@ -12,9 +12,10 @@ import { useParams, useRouter } from "next/navigation";
 interface Step1Props {
   delivery: string;
   color: string;
+  isCompleted: boolean;
 }
 
-const Step1 = ({ delivery, color }: Step1Props) => {
+const Step1 = ({ delivery, color, isCompleted }: Step1Props) => {
   const router = useRouter();
   const { id } = useParams() as { id: string };
 
@@ -30,6 +31,32 @@ const Step1 = ({ delivery, color }: Step1Props) => {
     // api 추가
     router.push(`/giftbag/${id}?step=2`);
   };
+
+  if (isCompleted) {
+    return (
+      <div className="relative w-full overflow-hidden h-full">
+        <div
+          className="absolute top-0 left-0 w-full h-full bg-cover bg-center mt-[56px]"
+          style={{ backgroundImage: "url('/img/background_union.svg')" }}
+        />
+        <div className="h-full flex flex-col gap-[90px] justify-center items-center relative">
+          <div className="flex flex-col justify-center items-center gap-8">
+            <p className="text-lg font-bold font-nanum text-center">
+              답변이 완료된 보따리에요. <br /> 어떤 선물을 받게될지 기대하세요!
+            </p>
+            <div className="flex justify-center items-center">
+              <Image
+                src={imageSrc}
+                alt={`${character} delivery`}
+                width={230}
+                height={230}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full overflow-hidden h-full">

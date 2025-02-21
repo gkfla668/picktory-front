@@ -49,6 +49,7 @@ const Page = () => {
         <Step1
           delivery={giftBag.delivery_character_type}
           color={giftBag.design_type.toLowerCase()}
+          isCompleted={giftBag.status === "COMPLETED"}
         />
       )}
       {step === "2" && <Step2 gifts={giftBag.gifts} />}
