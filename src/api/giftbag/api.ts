@@ -4,8 +4,6 @@ import { getCookie } from "cookies-next";
 
 /** 보따리 생성 api */
 
-const accessToken = getCookie("accessToken");
-
 export const createGiftBag = async ({
   giftBagName,
   selectedBagIndex,
@@ -15,6 +13,8 @@ export const createGiftBag = async ({
   selectedBagIndex: number;
   giftBoxes: GiftBox[];
 }) => {
+  const accessToken = getCookie("accessToken");
+
   const response = await fetch("/api/v1/bundles", {
     method: "POST",
     headers: {
@@ -45,6 +45,8 @@ export const createGiftBag = async ({
 /** 보따리 업데이트 api */
 
 export const updateGiftBag = async (giftBoxes: GiftBox[]) => {
+  const accessToken = getCookie("accessToken");
+
   const bundleIdStr = sessionStorage.getItem("giftBagId");
 
   if (!bundleIdStr) {
@@ -127,6 +129,8 @@ export interface GiftData {
 }
 
 export const fetchGiftResults = async (id: string): Promise<GiftData[]> => {
+  const accessToken = getCookie("accessToken");
+
   const response = await fetch(`/api/v1/bundles/${id}/result`, {
     method: "GET",
     headers: {
