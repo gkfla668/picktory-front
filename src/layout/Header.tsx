@@ -305,7 +305,7 @@ const Header = () => {
           onClick={handleTempSave}
           className="text-[15px] text-gray-200 flex justify-end"
         >
-          임시저장
+          임시 저장
         </Button>
       )}
     </div>
