@@ -6,7 +6,7 @@ interface ChipProps {
 const Chip = ({ text, width }: ChipProps) => {
   return (
     <div
-      className={`rounded-[48px] bg-white px-[10px] py-[14px] text-xs w-[${width}] h-8 flex items-center justify-center`}
+      className={`rounded-[48px] bg-white px-[10px] py-[14px] text-xs w-[${width}] h-8 flex items-center justify-center font-medium`}
     >
       <p>{text}</p>
     </div>
