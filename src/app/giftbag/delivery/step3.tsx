@@ -9,6 +9,7 @@ import { ToastAction } from "@/components/ui/toast";
 
 import KakaoShareButtonIcon from "/public/icons/kakao_share_button.svg";
 import LinkCopyButtonIcon from "/public/icons/link_copy_button.svg";
+import { useSelectedBagStore } from "@/stores/giftbag/useStore";
 
 const Step3 = () => {
   const searchParams = useSearchParams();
@@ -34,10 +35,7 @@ const Step3 = () => {
     }
   };
 
-  const storedData = JSON.parse(
-    localStorage.getItem("selectedBag-storage") || "{}",
-  );
-  const selectedBagIndex = storedData?.state?.selectedBagIndex ?? 0;
+  const { selectedBagIndex } = useSelectedBagStore();
 
   const COLORS = ["red", "pink", "blue", "yellow", "green"];
   const color = COLORS[selectedBagIndex].trim();
