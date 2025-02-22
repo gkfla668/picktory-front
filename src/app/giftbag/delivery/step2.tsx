@@ -10,10 +10,7 @@ import {
 } from "@/data/deliveryCharacterData";
 import { Button } from "@/components/ui/button";
 import { useGiftStore } from "@/stores/gift-upload/useStore";
-import {
-  useGiftBagStore,
-  useSelectedBagStore,
-} from "@/stores/giftbag/useStore";
+import { useGiftBagStore } from "@/stores/giftbag/useStore";
 import { useDeliveryGiftBag } from "@/hooks/api/useDeliveryGiftBag";
 import { DeliveryCharacterAPIType } from "@/types/giftbag/types";
 
@@ -21,8 +18,6 @@ const Step2 = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const character = searchParams ? searchParams.get("character") : null;
-
-  const { setSelectedBagIndex } = useSelectedBagStore();
   const { setGiftBagName } = useGiftBagStore();
 
   const resetStore = () => {
@@ -38,8 +33,6 @@ const Step2 = () => {
         id: null,
       }),
     });
-
-    setSelectedBagIndex(0);
     setGiftBagName("");
 
     sessionStorage.removeItem("giftBagId"); //세션스토리지에서 보따리 id 삭제
