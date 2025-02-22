@@ -15,7 +15,10 @@ import Chip from "../common/Chip";
 import LeftIcon from "/public/icons/arrow_left_large.svg";
 import RightIcon from "/public/icons/arrow_right_large.svg";
 
-import { GIFT_ANSWER_CHIP_TEXTES } from "@/constants/constants";
+import {
+  GIFT_ANSWER_CHIP_TEXTES,
+  GIFT_ANSWER_MAP,
+} from "@/constants/constants";
 import {
   useGiftAnswerStore,
   useIsUploadAnswerStore,
@@ -25,10 +28,11 @@ import { ReceiveGiftBox } from "@/types/giftbag/types";
 
 interface DetailGiftBoxProps {
   giftList: ReceiveGiftBox[];
+  mappedAnswers: Record<number, number>;
 }
 
-const DetailGiftBox = ({ giftList }: DetailGiftBoxProps) => {
-  const { answers, setAnswer } = useGiftAnswerStore();
+const DetailGiftBox = ({ giftList, mappedAnswers }: DetailGiftBoxProps) => {
+  const { setAnswer } = useGiftAnswerStore();
   const { isUploadedAnswer } = useIsUploadAnswerStore();
   const { selectedGiftIndex } = useSelectedGiftBoxStore();
 
@@ -172,7 +176,7 @@ const DetailGiftBox = ({ giftList }: DetailGiftBoxProps) => {
                           <Chip
                             key={index}
                             text={answer}
-                            isActive={answers[giftIndex] === index}
+                            isActive={mappedAnswers[giftIndex] === index}
                             onClick={() => handleSelectAnswer(giftIndex, index)}
                             disabled={isUploadedAnswer}
                           />
@@ -180,6 +184,18 @@ const DetailGiftBox = ({ giftList }: DetailGiftBoxProps) => {
                       })}
                     </div>
                   </div>
+                  {mappedAnswers[giftIndex] !== undefined && (
+                    <div className="mt-4 p-2 bg-gray-100 rounded-md text-center">
+                      <p className="text-sm text-gray-700">
+                        사용자가 선택한 답변:{" "}
+                        <strong>
+                          {GIFT_ANSWER_MAP[
+                            GIFT_ANSWER_CHIP_TEXTES[mappedAnswers[giftIndex]]
+                          ] || "알 수 없음"}
+                        </strong>
+                      </p>
+                    </div>
+                  )}
                 </div>
               </CarouselItem>
             );

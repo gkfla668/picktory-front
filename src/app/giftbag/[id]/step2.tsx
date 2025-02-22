@@ -13,10 +13,15 @@ import {
   useIsOpenDetailGiftBoxStore,
   useIsUploadAnswerStore,
 } from "@/stores/giftbag/useStore";
-import { ReceiveGiftBox } from "@/types/giftbag/types";
+import { ReceiveGiftBox, ResultGiftBox } from "@/types/giftbag/types";
 import { RESPONSE_TAGS } from "@/constants/constants";
 
-const Step2 = ({ gifts }: { gifts: ReceiveGiftBox[] }) => {
+interface Step2Props {
+  gifts: ReceiveGiftBox[];
+  giftResultData?: ResultGiftBox[];
+}
+
+const Step2 = ({ gifts, giftResultData }: Step2Props) => {
   const router = useRouter();
   const { id: link } = useParams() as { id: string };
 
@@ -27,7 +32,19 @@ const Step2 = ({ gifts }: { gifts: ReceiveGiftBox[] }) => {
 
   const [isAnswered, setIsAnswered] = useState(false);
 
-  const answeredCount = Object.keys(answers).length;
+  const mappedAnswers = giftResultData
+    ? giftResultData.reduce(
+        (acc, gift) => ({
+          ...acc,
+          [gifts.findIndex((g) => g.id === gift.id)]: RESPONSE_TAGS.indexOf(
+            gift.responseTag,
+          ),
+        }),
+        {} as Record<number, number>,
+      )
+    : answers;
+
+  const answeredCount = Object.keys(mappedAnswers).length;
   const chipText =
     answeredCount > 0
       ? `답변을 입력한 선물박스 ${answeredCount}개`
@@ -35,14 +52,14 @@ const Step2 = ({ gifts }: { gifts: ReceiveGiftBox[] }) => {
 
   useEffect(() => {
     if (answeredCount === gifts.length) setIsAnswered(true);
-  }, [answeredCount, answers, gifts.length]);
+  }, [answeredCount, mappedAnswers, gifts.length]);
 
   const submitGiftResponses = async () => {
     const requestBody = {
       bundleId: sessionStorage.getItem("receiveGiftBagId"),
       gifts: gifts.map((gift, index) => ({
         giftId: gift.id,
-        responseTag: RESPONSE_TAGS[answers[index] ?? 0],
+        responseTag: RESPONSE_TAGS[mappedAnswers[index] ?? 0],
       })),
     };
 
@@ -72,7 +89,7 @@ const Step2 = ({ gifts }: { gifts: ReceiveGiftBox[] }) => {
   return (
     <div className="relative bg-pink-50 overflow-hidden h-full">
       {isOpenDetailGiftBox ? (
-        <DetailGiftBox giftList={gifts} />
+        <DetailGiftBox giftList={gifts} mappedAnswers={mappedAnswers} />
       ) : (
         <div className="h-[calc(100%-113px)] flex flex-col justify-center items-center mt-[45px]">
           <div className="absolute top-4">
