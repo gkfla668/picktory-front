@@ -185,16 +185,17 @@ const GiftForm = () => {
             />
           </motion.div>
         )}
-        {isReasonFilled && (
-          <motion.div
-            ref={linkRef}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            <InputLink value={giftLink} onChange={setGiftLink} />
-          </motion.div>
-        )}
+        {isReasonFilled ||
+          (isBoxEditing && (
+            <motion.div
+              ref={linkRef}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            >
+              <InputLink value={giftLink} onChange={setGiftLink} />
+            </motion.div>
+          ))}
       </div>
       <div className="sticky bottom-4 w-full left-0">
         <Button size="lg" onClick={handleSubmit} disabled={!isFormValid}>
