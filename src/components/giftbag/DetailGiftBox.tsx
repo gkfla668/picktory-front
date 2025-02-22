@@ -15,10 +15,7 @@ import Chip from "../common/Chip";
 import LeftIcon from "/public/icons/arrow_left_large.svg";
 import RightIcon from "/public/icons/arrow_right_large.svg";
 
-import {
-  GIFT_ANSWER_CHIP_TEXTES,
-  GIFT_ANSWER_MAP,
-} from "@/constants/constants";
+import { GIFT_ANSWER_CHIP_TEXTES } from "@/constants/constants";
 import {
   useGiftAnswerStore,
   useIsUploadAnswerStore,
@@ -171,31 +168,17 @@ const DetailGiftBox = ({ giftList, mappedAnswers }: DetailGiftBoxProps) => {
                       선물에 대한 답변을 선택해주세요
                     </p>
                     <div className="flex gap-2 flex-wrap w-[272px]">
-                      {GIFT_ANSWER_CHIP_TEXTES.map((answer, index) => {
-                        return (
-                          <Chip
-                            key={index}
-                            text={answer}
-                            isActive={mappedAnswers[giftIndex] === index}
-                            onClick={() => handleSelectAnswer(giftIndex, index)}
-                            disabled={isUploadedAnswer}
-                          />
-                        );
-                      })}
+                      {GIFT_ANSWER_CHIP_TEXTES.map((answer, index) => (
+                        <Chip
+                          key={index}
+                          text={answer}
+                          isActive={mappedAnswers[giftIndex] === index}
+                          onClick={() => handleSelectAnswer(giftIndex, index)}
+                          disabled={isUploadedAnswer}
+                        />
+                      ))}
                     </div>
                   </div>
-                  {mappedAnswers[giftIndex] !== undefined && (
-                    <div className="mt-4 p-2 bg-gray-100 rounded-md text-center">
-                      <p className="text-sm text-gray-700">
-                        사용자가 선택한 답변:{" "}
-                        <strong>
-                          {GIFT_ANSWER_MAP[
-                            GIFT_ANSWER_CHIP_TEXTES[mappedAnswers[giftIndex]]
-                          ] || "알 수 없음"}
-                        </strong>
-                      </p>
-                    </div>
-                  )}
                 </div>
               </CarouselItem>
             );
