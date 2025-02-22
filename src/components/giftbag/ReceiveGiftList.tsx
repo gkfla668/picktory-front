@@ -26,7 +26,8 @@ const ReceiveGiftList = ({ giftList, onClick }: ReciveGiftListProps) => {
         const isAnswered = answers[index] !== undefined;
         const backgroundImage = `/img/gift_background_${shape}.svg`;
         const defaultGiftImage = `/img/gift_${letterType}_${shape}.svg`;
-        const giftImageUrl = isAnswered ? gift.imageUrls[0] : null;
+        const giftImageUrl =
+          isAnswered || isUploadedAnswer ? gift.imageUrls[0] : null;
 
         return (
           <div
