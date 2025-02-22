@@ -19,9 +19,10 @@ import { RESPONSE_TAGS } from "@/constants/constants";
 interface Step2Props {
   gifts: ReceiveGiftBox[];
   giftResultData?: ResultGiftBox[];
+  isCompleted?: boolean;
 }
 
-const Step2 = ({ gifts, giftResultData }: Step2Props) => {
+const Step2 = ({ gifts, giftResultData, isCompleted }: Step2Props) => {
   const router = useRouter();
   const { id: link } = useParams() as { id: string };
 
@@ -31,6 +32,12 @@ const Step2 = ({ gifts, giftResultData }: Step2Props) => {
   const { isUploadedAnswer, setIsUploadedAnswer } = useIsUploadAnswerStore();
 
   const [isAnswered, setIsAnswered] = useState(false);
+
+  useEffect(() => {
+    if (isCompleted) {
+      setIsUploadedAnswer(true);
+    }
+  }, [isCompleted, setIsUploadedAnswer]);
 
   const mappedAnswers = giftResultData
     ? giftResultData.reduce(

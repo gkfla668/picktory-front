@@ -59,7 +59,11 @@ const Page = () => {
         />
       )}
       {step === "2" && (
-        <Step2 gifts={giftBag.gifts} giftResultData={giftResultData} />
+        <Step2
+          gifts={giftBag.gifts}
+          giftResultData={giftResultData}
+          isCompleted={giftBag.status === "COMPLETED"}
+        />
       )}
       {step === "3" && <Step3 delivery={giftBag.delivery_character_type} />}
     </div>
