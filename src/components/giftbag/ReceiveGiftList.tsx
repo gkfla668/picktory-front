@@ -1,5 +1,6 @@
 import {
   useGiftAnswerStore,
+  useIsUploadAnswerStore,
   useSelectedGiftBoxStore,
 } from "@/stores/giftbag/useStore";
 import { ReceiveGiftBox } from "@/types/giftbag/types";
@@ -13,6 +14,7 @@ interface ReciveGiftListProps {
 const ReceiveGiftList = ({ giftList, onClick }: ReciveGiftListProps) => {
   const answers = useGiftAnswerStore((state) => state.answers);
   const { setSelectedGiftIndex } = useSelectedGiftBoxStore();
+  const { isUploadedAnswer } = useIsUploadAnswerStore();
 
   return (
     <div className="grid grid-cols-2 grid-rows-[repeat(auto-fill, minmax(130px, 1fr))] max-h-[390px] gap-[3px]">
@@ -24,7 +26,8 @@ const ReceiveGiftList = ({ giftList, onClick }: ReciveGiftListProps) => {
         const isAnswered = answers[index] !== undefined;
         const backgroundImage = `/img/gift_background_${shape}.svg`;
         const defaultGiftImage = `/img/gift_${letterType}_${shape}.svg`;
-        const giftImageUrl = isAnswered ? gift.imageUrls[0] : null;
+        const giftImageUrl =
+          isAnswered || isUploadedAnswer ? gift.imageUrls[0] : null;
 
         return (
           <div
@@ -36,13 +39,17 @@ const ReceiveGiftList = ({ giftList, onClick }: ReciveGiftListProps) => {
             }}
           >
             <Image
-              src={isAnswered ? backgroundImage : defaultGiftImage}
+              src={
+                isAnswered || isUploadedAnswer
+                  ? backgroundImage
+                  : defaultGiftImage
+              }
               alt="backgroundGift"
-              width={isAnswered ? 110 : 130}
-              height={isAnswered ? 110 : 130}
+              width={isAnswered || isUploadedAnswer ? 110 : 130}
+              height={isAnswered || isUploadedAnswer ? 110 : 130}
               className="object-cover"
             />
-            {isAnswered && giftImageUrl && (
+            {(isAnswered || isUploadedAnswer) && giftImageUrl && (
               <div
                 className={`absolute top-1/2 left-1/2 w-[90px] h-[90px] flex justify-center items-center overflow-hidden 
                 transform -translate-x-1/2 -translate-y-1/2

@@ -185,7 +185,7 @@ const GiftForm = () => {
             />
           </motion.div>
         )}
-        {isReasonFilled && (
+        {(isReasonFilled || isBoxEditing) && (
           <motion.div
             ref={linkRef}
             initial={{ opacity: 0, y: -20 }}
