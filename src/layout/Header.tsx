@@ -13,6 +13,7 @@ import { useEditBoxStore, useGiftStore } from "@/stores/gift-upload/useStore";
 import {
   useGiftBagStore,
   useGiftNameStore,
+  useIsClickedUpdateFilledButton,
   useIsOpenDetailGiftBoxStore,
   useSelectedBagStore,
 } from "@/stores/giftbag/useStore";
@@ -128,6 +129,7 @@ const Header = () => {
   const [showTempSave, setShowTempSave] = useState(false);
 
   const giftBagId = sessionStorage.getItem("giftBagId");
+  const { isClickedUpdateFilledButton } = useIsClickedUpdateFilledButton();
 
   useEffect(() => {
     const filledCount = giftBoxes.filter((box) => box && box.filled).length;
@@ -161,23 +163,11 @@ const Header = () => {
       toast({
         title: "임시저장 성공",
         description: "보따리가 임시저장되었습니다.",
-        style: {
-          position: "fixed",
-          bottom: "16px",
-          right: "12px",
-          width: "400px",
-        },
       });
     } catch (error) {
       toast({
         title: "임시저장 실패",
         description: `보따리 임시저장에 실패했습니다. ${error}`,
-        style: {
-          position: "fixed",
-          bottom: "16px",
-          right: "12px",
-          width: "400px",
-        },
       });
     }
   };
@@ -239,7 +229,12 @@ const Header = () => {
             if (isGiftUploadPage) {
               setIsBoxEditing(false);
             }
-            if (giftBagId && pathname === "/giftbag/add") router.push("/home");
+            if (
+              giftBagId &&
+              pathname === "/giftbag/add" &&
+              !isClickedUpdateFilledButton
+            )
+              router.push("/home");
             else router.back();
           }}
           variant="ghost"

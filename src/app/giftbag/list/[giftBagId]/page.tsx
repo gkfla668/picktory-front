@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import MyGiftBagNameChip from "@/components/myGiftbag/MyGiftBagNameChip";
@@ -25,6 +25,7 @@ import { ToastAction } from "@radix-ui/react-toast";
 import { useGiftStore } from "@/stores/gift-upload/useStore";
 
 import { DESIGN_TYPE_MAP } from "@/constants/constants";
+import { useIsClickedUpdateFilledButton } from "@/stores/giftbag/useStore";
 const Page = () => {
   const router = useRouter();
   const { giftBagId } = useParams() as { giftBagId: string };
@@ -40,6 +41,12 @@ const Page = () => {
     status: "",
     gifts: [],
   };
+
+  const { setIsClickedUpdateFilledButton } = useIsClickedUpdateFilledButton();
+
+  useEffect(() => {
+    setIsClickedUpdateFilledButton(false);
+  }, []);
 
   const handleCopyLink = () => {
     if (link !== null) {
@@ -169,6 +176,7 @@ const Page = () => {
   const handleFillGiftBag = async () => {
     resetStore(); // 기존 임시 저장 데이터 초기화
     if (giftBagId) sessionStorage.setItem("giftBagId", giftBagId);
+    setIsClickedUpdateFilledButton(true);
 
     try {
       await fetchSavedGift();

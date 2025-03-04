@@ -25,10 +25,11 @@ import { ReceiveGiftBox } from "@/types/giftbag/types";
 
 interface DetailGiftBoxProps {
   giftList: ReceiveGiftBox[];
+  mappedAnswers: Record<number, number>;
 }
 
-const DetailGiftBox = ({ giftList }: DetailGiftBoxProps) => {
-  const { answers, setAnswer } = useGiftAnswerStore();
+const DetailGiftBox = ({ giftList, mappedAnswers }: DetailGiftBoxProps) => {
+  const { setAnswer } = useGiftAnswerStore();
   const { isUploadedAnswer } = useIsUploadAnswerStore();
   const { selectedGiftIndex } = useSelectedGiftBoxStore();
 
@@ -167,17 +168,15 @@ const DetailGiftBox = ({ giftList }: DetailGiftBoxProps) => {
                       선물에 대한 답변을 선택해주세요
                     </p>
                     <div className="flex gap-2 flex-wrap w-[272px]">
-                      {GIFT_ANSWER_CHIP_TEXTES.map((answer, index) => {
-                        return (
-                          <Chip
-                            key={index}
-                            text={answer}
-                            isActive={answers[giftIndex] === index}
-                            onClick={() => handleSelectAnswer(giftIndex, index)}
-                            disabled={isUploadedAnswer}
-                          />
-                        );
-                      })}
+                      {GIFT_ANSWER_CHIP_TEXTES.map((answer, index) => (
+                        <Chip
+                          key={index}
+                          text={answer}
+                          isActive={mappedAnswers[giftIndex] === index}
+                          onClick={() => handleSelectAnswer(giftIndex, index)}
+                          disabled={isUploadedAnswer}
+                        />
+                      ))}
                     </div>
                   </div>
                 </div>

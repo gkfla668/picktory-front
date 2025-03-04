@@ -84,3 +84,12 @@ export type DeliveryCharacterAPIType =
   | "CHARACTER_2"
   | "CHARACTER_3"
   | "CHARACTER_4";
+
+//보따리 결과 선물 박스 타입
+export interface ResultGiftBox {
+  id: number;
+  name: string;
+  purchaseUrl: string;
+  thumbnail: string;
+  responseTag: string;
+}
