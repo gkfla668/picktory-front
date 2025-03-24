@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 
 import ArrowIcon from "/public/icons/arrow_right_small.svg";
 import { deleteToken } from "@/utils/utils";
 import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
+import { Icon } from "@/components/common/Icon";
 
 const Page = () => {
   const router = useRouter();
@@ -24,7 +24,7 @@ const Page = () => {
         <Link href={"/setting/account"}>
           <div className="flex justify-center items-center cursor-pointer">
             <p>카카오</p>
-            <Image src={ArrowIcon} alt="arrow" width={14} height={14} />
+            <Icon src={ArrowIcon} alt="arrow" size="small" />
           </div>
         </Link>
       </div>
@@ -33,7 +33,7 @@ const Page = () => {
       </div>
       <div className="text-[15px] py-[18px] border-b-[1px] border-[#f4f4f4] flex justify-between items-center">
         <p>버전 정보</p>
-        <p className="text-gray-300">1.0.0 v</p>
+        <p className="text-gray-300">v1.0.0</p>
       </div>
       <div
         className="text-[15px] py-[18px] border-b-[1px] border-[#f4f4f4] text-symantic-negative cursor-pointer"

@@ -6,15 +6,21 @@ import { useSearchParams } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { useSelectedBagStore } from "@/stores/giftbag/useStore";
-import { CHARACTER_EN_MAP } from "@/constants/constants";
+import { CHARACTERS, GIFTBAG_COLORS } from "@/constants/constants";
 
 import KakaoShareButtonIcon from "/public/icons/kakao_share_button.svg";
 import LinkCopyButtonIcon from "/public/icons/link_copy_button.svg";
+import { Icon } from "@/components/common/Icon";
 
 const Step3 = () => {
   const searchParams = useSearchParams();
-  const character = searchParams ? searchParams.get("character") : null;
+  const characterKo = searchParams?.get("character") ?? "포리";
   const link = searchParams ? searchParams.get("link") : null;
+
+  const characterEntry = Object.values(CHARACTERS).find(
+    (char) => char.ko === characterKo,
+  );
+  const characterEn = characterEntry?.en ?? "pori";
 
   const handleCopyLink = () => {
     if (link !== null) {
@@ -36,15 +42,13 @@ const Step3 = () => {
   };
 
   const { selectedBagIndex } = useSelectedBagStore();
-
-  const COLORS = ["red", "pink", "blue", "yellow", "green"];
-  const color = COLORS[selectedBagIndex].trim();
+  const color = GIFTBAG_COLORS[selectedBagIndex].toLowerCase().trim();
 
   return (
     <div className="h-full bg-[url('/img/background_union.svg')] bg-cover bg-center flex flex-col items-center justify-center gap-7">
       <section className="flex flex-col items-center gap-[34px]">
         <Image
-          src={`/img/${CHARACTER_EN_MAP[character ?? ""]}_${color}.svg`}
+          src={`/img/${characterEn}_${color}.svg`}
           alt="delivery"
           width={200}
           height={200}
@@ -71,14 +75,14 @@ const Step3 = () => {
       {/* Button Section */}
       <section className="flex gap-3">
         <button className="flex flex-col items-center gap-1">
-          <Image src={KakaoShareButtonIcon} alt="kakaoShare" />
+          <Icon src={KakaoShareButtonIcon} alt="kakaoShare" />
           <p className="text-gray-600 text-xs">카카오톡</p>
         </button>
         <button
           className="flex flex-col items-center gap-1"
           onClick={handleCopyLink}
         >
-          <Image src={LinkCopyButtonIcon} alt="linkCopy" />
+          <Icon src={LinkCopyButtonIcon} alt="linkCopy" />
           <p className="text-gray-600 text-xs">링크 복사</p>
         </button>
       </section>

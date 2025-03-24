@@ -5,22 +5,22 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   ANSWER_MESSAGE_MAP,
-  deliveryCharacterData,
-} from "@/data/deliveryCharacterData";
-import { CHARACTER_MAP } from "@/constants/constants";
+  CHARACTERS,
+  DELIVERY_CHARACTER_DATA,
+} from "@/constants/constants";
+import { CharacterKey } from "@/types/constants/types";
 
-interface Step3Props {
-  delivery: string;
-}
-
-const Step3 = ({ delivery }: Step3Props) => {
+const Step3 = ({ delivery }: { delivery: string }) => {
   const router = useRouter();
   const params = useParams();
   const id = params?.id;
 
-  const characterName = CHARACTER_MAP[delivery] || "포리";
+  const characterInfo =
+    CHARACTERS[delivery as CharacterKey] || CHARACTERS.CHARACTER_1;
 
-  const characterData = deliveryCharacterData[characterName];
+  const characterName = characterInfo.ko;
+
+  const characterData = DELIVERY_CHARACTER_DATA[characterName];
   const messageData = ANSWER_MESSAGE_MAP[characterName];
 
   const handleGoBack = () => {
