@@ -34,6 +34,7 @@ const CharacterCountInput = ({
         onChange={handleChange}
         maxLength={maxLength}
         placeholder={placeholder}
+        className="shadow-none"
       />
     </div>
   );
