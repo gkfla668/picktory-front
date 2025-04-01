@@ -1,3 +1,4 @@
+import { HTMLAttributes, ReactNode } from "react";
 import { ImageItem } from "../gift-upload/types";
 import {
   FilledGiftListPreview,
@@ -74,6 +75,16 @@ export interface ImageCardProps {
   src: string;
   isPrimary?: boolean;
   onDelete: () => void;
+  dragHandleProps?: React.HTMLAttributes<HTMLElement>;
+}
+
+type DragHandleProps = {
+  dragHandleProps: HTMLAttributes<HTMLElement>;
+};
+
+export interface SortableImageWrapperProps {
+  id: string;
+  children: ReactNode | ((props: DragHandleProps) => ReactNode);
 }
 
 export interface InputLinkProps {

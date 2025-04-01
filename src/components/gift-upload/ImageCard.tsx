@@ -4,7 +4,12 @@ import EraseIcon from "../../../public/icons/btn_erase.svg";
 import { Icon } from "../common/Icon";
 import { ImageCardProps } from "@/types/components/types";
 
-const ImageCard = ({ src, isPrimary, onDelete }: ImageCardProps) => {
+const ImageCard = ({
+  src,
+  isPrimary,
+  onDelete,
+  dragHandleProps,
+}: ImageCardProps) => {
   return (
     <div className="relative">
       <button
@@ -21,6 +26,7 @@ const ImageCard = ({ src, isPrimary, onDelete }: ImageCardProps) => {
           height={88}
           className="w-full h-full object-cover"
           priority
+          {...dragHandleProps}
         />
         {isPrimary && (
           <div className="absolute bottom-0 w-[88px] bg-[#0F0F10] opacity-70 text-gray-300 text-xs pt-0.5 text-center rounded-bl-[10px] rounded-br-[10px] h-5">
