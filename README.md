@@ -1,4 +1,4 @@
-# 🎁 Picktory
+# 🎁 Picktory, 상대방의 취향을 반영하여 더 나은 선물을 할 수 있는 서비스
 
 ![표지](https://github.com/user-attachments/assets/ca515621-10be-4655-b8dc-c15fde8f298b)
 
