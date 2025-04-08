@@ -115,47 +115,40 @@ const GiftForm = () => {
   };
 
   return (
-    <div className="px-4 flex flex-col">
-      <div className="flex flex-col gap-8 mt-[18px] pb-[7px]">
-        <div className="flex flex-col gap-[22px]">
-          <div
-            className="w-full overflow-x-auto min-w-full flex flex-col gap-2"
-            style={{ scrollbarWidth: "none" }}
-          >
-            <UploadImageList
-              combinedImages={combinedImages}
-              setCombinedImages={setCombinedImages}
-              maxImages={5}
-            />
-            {combinedImages.length <= 0 ? (
-              <p className="text-xs text-coral-400 font-medium">
-                * 사진은 1장 이상 첨부해 주세요.
-              </p>
-            ) : (
-              <div className="h-4" />
-            )}
-          </div>
-          <div className="flex flex-col gap-2">
-            <CharacterCountInput
-              maxLength={GIFT_NAME_MAX_LENGTH}
-              value={giftName}
-              placeholder="선물명을 적어주세요"
-              onChange={(text) => setGiftName(text)}
-            />
-          </div>
-        </div>
-        <InputReason
-          value={giftReason}
-          onReasonChange={setGiftReason}
-          onTagChange={setGiftTag}
-          giftBoxIndex={index}
+    <div className="flex h-fit w-full flex-col px-4 py-5">
+      <div className="flex flex-1 flex-col gap-[22px]">
+        <UploadImageList
+          combinedImages={combinedImages}
+          setCombinedImages={setCombinedImages}
+          maxImages={5}
         />
-        <div className="flex flex-col gap-8">
+        {combinedImages.length <= 0 ? (
+          <p className="text-xs font-medium text-coral-400">
+            * 사진은 1장 이상 첨부해 주세요.
+          </p>
+        ) : (
+          <div className="h-4" />
+        )}
+        <div className="flex flex-col gap-[50px]">
+          <CharacterCountInput
+            maxLength={GIFT_NAME_MAX_LENGTH}
+            value={giftName}
+            placeholder="선물명을 적어주세요"
+            onChange={(text) => setGiftName(text)}
+          />
+          <InputReason
+            value={giftReason}
+            onReasonChange={setGiftReason}
+            onTagChange={setGiftTag}
+            giftBoxIndex={index}
+          />
           <InputLink value={giftLink} onChange={setGiftLink} />
-          <Button size="lg" onClick={handleSubmit} disabled={!isFormValid}>
-            {isBoxEditing ? "수정 완료" : "채우기 완료"}
-          </Button>
         </div>
+      </div>
+      <div className="mt-10">
+        <Button size="lg" onClick={handleSubmit} disabled={!isFormValid}>
+          {isBoxEditing ? "수정 완료" : "채우기 완료"}
+        </Button>
       </div>
     </div>
   );
