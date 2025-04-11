@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import Image from "next/image";
@@ -26,16 +25,13 @@ import { ReceiveGiftBox } from "@/types/giftbag/types";
 
 interface DetailGiftBoxProps {
   giftList: ReceiveGiftBox[];
+  mappedAnswers: Record<number, number>;
 }
 
-const DetailGiftBox = ({ giftList }: DetailGiftBoxProps) => {
-  const { answers, setAnswer } = useGiftAnswerStore();
-
-  const handleSelectAnswer = (giftIndex: number, answerIndex: number) => {
-    setAnswer(giftIndex, answerIndex);
-  };
-
+const DetailGiftBox = ({ giftList, mappedAnswers }: DetailGiftBoxProps) => {
+  const { setAnswer } = useGiftAnswerStore();
   const { isUploadedAnswer } = useIsUploadAnswerStore();
+  const { selectedGiftIndex } = useSelectedGiftBoxStore();
 
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [currentCarousel, setCurrentCarousel] = useState(0);
@@ -43,7 +39,6 @@ const DetailGiftBox = ({ giftList }: DetailGiftBoxProps) => {
   const [currentImageIndexes, setCurrentImageIndexes] = useState<{
     [key: number]: number;
   }>(giftList.reduce((acc, _, index) => ({ ...acc, [index]: 0 }), {}));
-  const { selectedGiftIndex } = useSelectedGiftBoxStore();
 
   useEffect(() => {
     if (carouselApi && selectedGiftIndex !== null) {
@@ -81,6 +76,15 @@ const DetailGiftBox = ({ giftList }: DetailGiftBoxProps) => {
     const api = imgCarouselApis.current[giftIndex];
     if (api) {
       api.scrollTo(currentImageIndexes[giftIndex] + 1);
+    }
+  };
+
+  const handleSelectAnswer = (giftIndex: number, answerIndex: number) => {
+    setAnswer(giftIndex, answerIndex);
+    if (carouselApi && giftIndex < giftList.length - 1) {
+      setTimeout(() => {
+        carouselApi.scrollTo(giftIndex + 1);
+      }, 400);
     }
   };
 
@@ -124,13 +128,12 @@ const DetailGiftBox = ({ giftList }: DetailGiftBoxProps) => {
                     </CarouselContent>
                     {currentImageIndexes[giftIndex] !== 0 && (
                       <Button
-                        className="absolute left-2 top-1/2 transform -translate-y-1/2 w-7 h-7 bg-gray-100 opacity-30 rounded-full hover:opacity-60
-                        "
+                        className="absolute left-2 top-1/2 transform -translate-y-1/2 w-7 h-7 bg-gray-100 opacity-30 rounded-full hover:opacity-60"
                         onClick={() => handlePrevImage(giftIndex)}
                         disabled={currentImageIndexes[giftIndex] === 0}
                         variant="ghost"
                       >
-                        <Image src={LeftIcon} alt={"leftArrow"} width={"15"} />
+                        <Image src={LeftIcon} alt="leftArrow" width="15" />
                       </Button>
                     )}
                     {currentImageIndexes[giftIndex] !==
@@ -144,14 +147,10 @@ const DetailGiftBox = ({ giftList }: DetailGiftBoxProps) => {
                         }
                         variant="ghost"
                       >
-                        <Image
-                          src={RightIcon}
-                          alt={"RightArrow"}
-                          width={"15"}
-                        />
+                        <Image src={RightIcon} alt="RightArrow" width="15" />
                       </Button>
                     )}
-                    <div className="absolute fixed bottom-2 right-2 w-10 h-[23px] rounded-[40px] px-[10px] py-1 bg-white/70 text-center">
+                    <div className="absolute bottom-2 right-2 w-10 h-[23px] rounded-[40px] px-[10px] py-1 bg-white/70 text-center">
                       <p className="text-[10px] text-gray-600 tracking-[2px]">
                         {currentImageIndexes[giftIndex] + 1}/
                         {gift.imageUrls.length}
@@ -169,17 +168,15 @@ const DetailGiftBox = ({ giftList }: DetailGiftBoxProps) => {
                       선물에 대한 답변을 선택해주세요
                     </p>
                     <div className="flex gap-2 flex-wrap w-[272px]">
-                      {GIFT_ANSWER_CHIP_TEXTES.map((answer, index) => {
-                        return (
-                          <Chip
-                            key={index}
-                            text={answer}
-                            isActive={answers[giftIndex] === index}
-                            onClick={() => handleSelectAnswer(giftIndex, index)}
-                            disabled={isUploadedAnswer}
-                          />
-                        );
-                      })}
+                      {GIFT_ANSWER_CHIP_TEXTES.map((answer, index) => (
+                        <Chip
+                          key={index}
+                          text={answer}
+                          isActive={mappedAnswers[giftIndex] === index}
+                          onClick={() => handleSelectAnswer(giftIndex, index)}
+                          disabled={isUploadedAnswer}
+                        />
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -192,7 +189,9 @@ const DetailGiftBox = ({ giftList }: DetailGiftBoxProps) => {
         {giftList.map((_, index) => {
           return (
             <p
-              className={`${currentCarousel === index + 1 ? "bg-pink-500" : "bg-gray-300"} w-[6px] h-[6px] rounded-full`}
+              className={`w-[6px] h-[6px] rounded-full ${
+                currentCarousel === index + 1 ? "bg-pink-500" : "bg-gray-300"
+              }`}
               key={index}
             ></p>
           );

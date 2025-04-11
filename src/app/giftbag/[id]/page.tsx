@@ -4,7 +4,7 @@ import { useParams, useSearchParams } from "next/navigation";
 import Step1 from "./step1";
 import Step2 from "./step2";
 import Step3 from "./step3";
-import { fetchResponseBundle } from "@/api/giftbag/api";
+import { fetchGiftResults, fetchResponseBundle } from "@/api/giftbag/api";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "@/components/common/Loading";
 
@@ -19,9 +19,15 @@ const Page = () => {
     isPending,
     isError,
   } = useQuery({
-    queryKey: ["reiceiveGiftBag", link],
+    queryKey: ["receiveGiftBag", link],
     queryFn: () => fetchResponseBundle(link),
     enabled: !!link,
+  });
+
+  const { data: giftResultData, isError: isGiftResultDataError } = useQuery({
+    queryKey: ["giftResults", giftBag?.id],
+    queryFn: () => fetchGiftResults(giftBag?.id as unknown as string),
+    enabled: !!giftBag?.id && giftBag?.status === "COMPLETED",
   });
 
   if (isPending)
@@ -33,7 +39,7 @@ const Page = () => {
       </div>
     );
 
-  if (isError || !giftBag)
+  if (isError || !giftBag || isGiftResultDataError)
     return (
       <div className="h-full flex flex-col items-center justify-center ">
         <h1 className="text-4xl font-bold text-gray-800">ERROR</h1>
@@ -44,14 +50,21 @@ const Page = () => {
     );
 
   return (
-    <div className={`h-full relative ${step === "2" && "bg-pink-50 "}`}>
+    <div className={`h-full relative ${step === "2" && "bg-pink-50"}`}>
       {step === "1" && (
         <Step1
           delivery={giftBag.delivery_character_type}
-          color={giftBag.design_type}
+          color={giftBag.design_type.toLowerCase()}
+          isCompleted={giftBag.status === "COMPLETED"}
         />
       )}
-      {step === "2" && <Step2 gifts={giftBag.gifts} />}
+      {step === "2" && (
+        <Step2
+          gifts={giftBag.gifts}
+          giftResultData={giftResultData}
+          isCompleted={giftBag.status === "COMPLETED"}
+        />
+      )}
       {step === "3" && <Step3 delivery={giftBag.delivery_character_type} />}
     </div>
   );

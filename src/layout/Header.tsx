@@ -13,6 +13,7 @@ import { useEditBoxStore, useGiftStore } from "@/stores/gift-upload/useStore";
 import {
   useGiftBagStore,
   useGiftNameStore,
+  useIsClickedUpdateFilledButton,
   useIsOpenDetailGiftBoxStore,
   useSelectedBagStore,
 } from "@/stores/giftbag/useStore";
@@ -20,11 +21,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { createGiftBag, updateGiftBag } from "@/api/giftbag/api";
 import { toast } from "@/hooks/use-toast";
-import { GiftBox } from "@/types/giftbag/types";
 
 import LogoIcon from "/public/icons/logo.svg";
 import SettingIcon from "/public/icons/setting_large.svg";
 import ArrowLeftIcon from "/public/icons/arrow_left_large.svg";
+import { GiftBox } from "@/types/giftbag/types";
 
 // 정적 title 관리
 const pageTitles: { [key: string]: string } = {
@@ -127,56 +128,19 @@ const Header = () => {
   const { selectedBagIndex } = useSelectedBagStore();
   const [showTempSave, setShowTempSave] = useState(false);
 
+  const giftBagId = sessionStorage.getItem("giftBagId");
+  const { isClickedUpdateFilledButton } = useIsClickedUpdateFilledButton();
+
   useEffect(() => {
     const filledCount = giftBoxes.filter((box) => box && box.filled).length;
     setShowTempSave(filledCount >= 2);
   }, [giftBoxes]);
 
-  const [giftBagId, setGiftBagId] = useState<string | null>(
-    () => sessionStorage.getItem("giftBagId") || null,
-  );
-
-  useEffect(() => {
-    if (giftBagId) {
-      sessionStorage.setItem("giftBagId", giftBagId);
-    }
-  }, [giftBagId]);
-
   const handleTempSave = async () => {
-    if (giftBagId) {
-      try {
-        const res = await updateGiftBag(giftBoxes);
+    try {
+      const giftBagId = sessionStorage.getItem("giftBagId");
 
-        if (res?.gifts?.length) {
-          res.gifts.forEach((gift: GiftBox, index: number) => {
-            useGiftStore.getState().updateGiftBox(index, { id: gift.id });
-          });
-        }
-
-        toast({
-          title: "임시저장 성공",
-          description: "보따리가 임시저장되었습니다.",
-          style: {
-            position: "fixed",
-            bottom: "16px",
-            right: "12px",
-            width: "400px",
-          },
-        });
-      } catch (error) {
-        toast({
-          title: "임시저장 실패",
-          description: `보따리 임시저장에 실패했습니다. ${error}`,
-          style: {
-            position: "fixed",
-            bottom: "16px",
-            right: "12px",
-            width: "400px",
-          },
-        });
-      }
-    } else {
-      try {
+      if (!giftBagId) {
         const res = await createGiftBag({
           giftBagName,
           selectedBagIndex,
@@ -184,37 +148,27 @@ const Header = () => {
         });
 
         if (res?.id) {
-          setGiftBagId(res.id);
+          sessionStorage.setItem("giftBagId", res.id);
         }
+      } else {
+        const res = await updateGiftBag(giftBoxes);
 
-        if (res?.gifts?.length) {
-          res.gifts.forEach((gift: GiftBox, index: number) => {
+        if (res?.result?.gifts) {
+          res.result.gifts.forEach((gift: GiftBox, index: number) => {
             useGiftStore.getState().updateGiftBox(index, { id: gift.id });
           });
         }
-
-        toast({
-          title: "임시저장 성공",
-          description: "보따리가 임시저장되었습니다.",
-          style: {
-            position: "fixed",
-            bottom: "16px",
-            right: "12px",
-            width: "400px",
-          },
-        });
-      } catch (error) {
-        toast({
-          title: "임시저장 실패",
-          description: `보따리 임시저장에 실패했습니다. ${error}`,
-          style: {
-            position: "fixed",
-            bottom: "16px",
-            right: "12px",
-            width: "400px",
-          },
-        });
       }
+
+      toast({
+        title: "임시저장 성공",
+        description: "보따리가 임시저장되었습니다.",
+      });
+    } catch (error) {
+      toast({
+        title: "임시저장 실패",
+        description: `보따리 임시저장에 실패했습니다. ${error}`,
+      });
     }
   };
 
@@ -275,7 +229,13 @@ const Header = () => {
             if (isGiftUploadPage) {
               setIsBoxEditing(false);
             }
-            router.back();
+            if (
+              giftBagId &&
+              pathname === "/giftbag/add" &&
+              !isClickedUpdateFilledButton
+            )
+              router.push("/home");
+            else router.back();
           }}
           variant="ghost"
           className="flex justify-start"

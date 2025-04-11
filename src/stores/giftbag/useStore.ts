@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 interface SelectedBagStore {
   selectedBagIndex: number;
@@ -61,6 +61,7 @@ export const useGiftAnswerStore = create(
     }),
     {
       name: "gift-answers",
+      storage: createJSONStorage(() => sessionStorage),
     },
   ),
 );
@@ -106,7 +107,27 @@ export const useIsUploadAnswerStore = create<IsUploadAnswerStore>()(
         set({ isUploadedAnswer: isUploaded }),
     }),
     {
-      name: "uploaded-answer-storage",
+      name: "uploaded-answer",
+      storage: createJSONStorage(() => sessionStorage),
     },
   ),
 );
+
+interface IsClickedUpdateFilledButtonStore {
+  isClickedUpdateFilledButton: boolean;
+  setIsClickedUpdateFilledButton: (isClicked: boolean) => void;
+}
+
+export const useIsClickedUpdateFilledButton =
+  create<IsClickedUpdateFilledButtonStore>()(
+    persist(
+      (set) => ({
+        isClickedUpdateFilledButton: false,
+        setIsClickedUpdateFilledButton: (isClicked) =>
+          set({ isClickedUpdateFilledButton: isClicked }),
+      }),
+      {
+        name: "cilcked-updateFilledButton",
+      },
+    ),
+  );
