@@ -3,7 +3,6 @@ import { GiftBox, ReceiveGiftBag } from "@/types/giftbag/types";
 import { getCookie } from "cookies-next";
 
 /** 보따리 생성 api */
-
 export const createGiftBag = async ({
   giftBagName,
   selectedBagIndex,
