@@ -17,10 +17,10 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 
-import { useMyBundleDetail } from "@/queries/useMyBundleDetail";
-import { useDeleteBundle } from "@/queries/useDeleteMyBundle";
+import { useMyBundleDetail } from "@/queries/useMyBundleDetail";
+import { useDeleteBundle } from "@/queries/useDeleteMyBundle";
 import { toast } from "@/hooks/use-toast";
-import { useFillGift } from "@/queries/useFillGift";
+import { useFillGift } from "@/queries/useFillGift";
 import { ToastAction } from "@radix-ui/react-toast";
 import { useGiftStore } from "@/stores/gift-upload/useStore";
 import { useIsClickedUpdateFilledButton } from "@/stores/bundle/useStore";
