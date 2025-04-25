@@ -26,9 +26,9 @@ const Page = () => {
         <Image
           src={MainGraphic}
           alt="MainGraphic"
-          width={394}
-          height={346}
-          loading="eager"
+          width={430}
+          style={{ height: "auto" }}
+          priority
         />
         <Link
           href="/bundle/select"
