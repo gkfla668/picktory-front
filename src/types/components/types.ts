@@ -109,6 +109,9 @@ export interface UploadImageListProps {
 export interface BundleChipProps {
   text: string;
   width: string;
+  icon?: ReactNode;
+  isClickable?: boolean;
+  onClick?: () => void;
 }
 
 export interface DetailGiftBoxProps {
