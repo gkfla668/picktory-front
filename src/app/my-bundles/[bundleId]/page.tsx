@@ -23,7 +23,7 @@ import { useDeleteMyBundleMutation } from "@/queries/useDeleteMyBundleMutation";
 import { useDraftBundleGiftsQuery } from "@/queries/useDraftBundleGiftsQuery";
 import { useMyBundleDetailQuery } from "@/queries/useMyBundleDetailQuery";
 import {
-  useBundleStore,
+  useBundleNameStore,
   useIsClickedUpdateFilledButton,
 } from "@/stores/bundle/useStore";
 import { useGiftStore } from "@/stores/gift-upload/useStore";
@@ -36,8 +36,8 @@ const Page = () => {
   const router = useRouter();
   const { bundleId } = useParams() as { bundleId: string };
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { setBundleName } = useBundleStore();
 
+  const { setBundleName } = useBundleNameStore();
   const { updateGiftBox } = useGiftStore();
 
   const { data } = useMyBundleDetailQuery(parseInt(bundleId));
