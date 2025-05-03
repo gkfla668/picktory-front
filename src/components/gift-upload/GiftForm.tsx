@@ -1,22 +1,23 @@
 "use client";
 
-import { useEffect, useState, useMemo, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
+import { useEffect, useState, useMemo } from "react";
+
 import CharacterCountInput from "../common/CharacterCountInput";
 import { Button } from "../ui/button";
-import InputLink from "./InputLink";
-import InputReason from "./InputReason";
-import UploadImageList from "./UploadImageList";
 import { GIFT_NAME_MAX_LENGTH } from "@/constants/constants";
+import { useUploadImageMutation } from "@/queries/useUploadImageMutation";
 import {
   useTagIndexStore,
   useGiftStore,
   useEditBoxStore,
+  useToastStore,
 } from "@/stores/gift-upload/useStore";
-import { motion } from "framer-motion";
-import { uploadGiftImages } from "@/api/gift-upload/api";
 import { ImageItem } from "@/types/gift-upload/types";
+
+import InputLink from "./InputLink";
+import InputReason from "./InputReason";
+import UploadImageList from "./UploadImageList";
 
 const GiftForm = () => {
   const router = useRouter();
@@ -25,7 +26,7 @@ const GiftForm = () => {
 
   const { giftBoxes, updateGiftBox } = useGiftStore();
   const { selectedTagIndex } = useTagIndexStore();
-  const { isBoxEditing, setIsBoxEditing } = useEditBoxStore();
+  const { isBoxEditing } = useEditBoxStore();
 
   const existingGift = useMemo(
     () =>
@@ -47,13 +48,7 @@ const GiftForm = () => {
   const [giftReason, setGiftReason] = useState(existingGift.reason || "");
   const [giftLink, setGiftLink] = useState(existingGift.purchase_url || "");
   const [giftTag, setGiftTag] = useState(existingGift.tag || "");
-
-  const [isGiftNameFilled, setIsGiftNameFilled] = useState(!!giftName);
-  const [isReasonFilled, setIsReasonFilled] = useState(!!giftReason);
   const [isFormValid, setIsFormValid] = useState(false);
-
-  const reasonRef = useRef<HTMLDivElement>(null);
-  const linkRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isBoxEditing) {
@@ -61,8 +56,6 @@ const GiftForm = () => {
       setGiftReason(existingGift.reason || "");
       setGiftLink(existingGift.purchase_url || "");
       setGiftTag(existingGift.tag || "");
-      setIsGiftNameFilled(!!existingGift.name);
-      setIsReasonFilled(!!existingGift.reason);
       setCombinedImages(
         existingGift.imgUrls.map((url) => ({ type: "existing", url })),
       );
@@ -70,61 +63,16 @@ const GiftForm = () => {
   }, [isBoxEditing, existingGift]);
 
   useEffect(() => {
-    if (!isGiftNameFilled && giftName.length > 0 && !isBoxEditing) {
-      setIsGiftNameFilled(true);
-      setTimeout(() => {
-        reasonRef.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      }, 100);
-    }
-  }, [giftName]);
-
-  useEffect(() => {
-    if (!isReasonFilled && giftReason.length > 0 && !isBoxEditing) {
-      setIsReasonFilled(true);
-      setTimeout(() => {
-        linkRef.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      }, 100);
-    }
-  }, [giftReason]);
-
-  useEffect(() => {
     setIsFormValid(giftName.trim().length > 0 && combinedImages.length > 0);
   }, [giftName, combinedImages]);
 
-  const uploadMutation = useMutation<string[], Error, FormData>({
-    mutationFn: uploadGiftImages,
-    onSuccess: (uploadedUrls: string[]) => {
-      const existingUrls = combinedImages
-        .filter((item) => item.type === "existing")
-        .map((item) => item.url);
-      const merged = [...existingUrls, ...uploadedUrls];
-      updateGiftBox(index, { ...existingGift, imgUrls: merged });
-    },
-  });
+  const uploadImage = useUploadImageMutation();
 
   const handleSubmit = () => {
     const existingItems = combinedImages
       .filter((item) => item.type === "existing")
       .map((item) => item.url);
     const newItems = combinedImages.filter((item) => item.type === "new");
-
-    const updatedGiftBox = {
-      name: giftName,
-      reason: giftReason,
-      purchase_url: giftLink,
-      tag: giftTag,
-      tagIndex: selectedTagIndex,
-      filled: true,
-      imgUrls: isBoxEditing ? existingItems : [],
-    };
-
-    updateGiftBox(index, updatedGiftBox);
 
     if (newItems.length > 0) {
       const formData = new FormData();
@@ -133,70 +81,82 @@ const GiftForm = () => {
           formData.append("files", item.file);
         }
       });
-      uploadMutation.mutate(formData, {
-        onSuccess: (uploadedUrls: string[]) => {
-          const mergedImages = isBoxEditing
+      uploadImage.mutate(formData, {
+        onSuccess: (uploadedUrls) => {
+          const finalImgUrls = isBoxEditing
             ? [...existingItems, ...uploadedUrls]
             : uploadedUrls;
-          updateGiftBox(index, { ...updatedGiftBox, imgUrls: mergedImages });
+
+          const updatedGiftBox = {
+            name: giftName,
+            reason: giftReason,
+            purchase_url: giftLink,
+            tag: giftTag,
+            tagIndex: selectedTagIndex,
+            filled: true,
+            imgUrls: finalImgUrls,
+          };
+
+          updateGiftBox(index, updatedGiftBox);
+
+          if (isBoxEditing) {
+            useToastStore.getState().setShowEditToast(true);
+          }
+          router.push("/bundle/add");
         },
       });
-    }
+    } else {
+      const updatedGiftBox = {
+        name: giftName,
+        reason: giftReason,
+        purchase_url: giftLink,
+        tag: giftTag,
+        tagIndex: selectedTagIndex,
+        filled: true,
+        imgUrls: existingItems,
+      };
 
-    router.push("/giftbag/add");
-    setIsBoxEditing(false);
+      updateGiftBox(index, updatedGiftBox);
+
+      if (isBoxEditing) {
+        useToastStore.getState().setShowEditToast(true);
+      }
+      router.push("/bundle/add");
+    }
   };
 
+  const imageTextColor =
+    combinedImages.length <= 0 ? "text-symantic-negative" : "text-gray-300";
+
   return (
-    <div className="px-4 flex flex-col h-full overflow-y-auto">
-      <div className="flex flex-col flex-grow gap-[50px] mt-[18px] pb-[70px]">
-        <div className="flex flex-col gap-[22px]">
-          <div
-            className="w-full overflow-x-auto min-w-full flex flex-col gap-2"
-            style={{ scrollbarWidth: "none" }}
-          >
-            <UploadImageList
-              combinedImages={combinedImages}
-              setCombinedImages={setCombinedImages}
-              maxImages={5}
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <CharacterCountInput
-              maxLength={GIFT_NAME_MAX_LENGTH}
-              value={giftName}
-              placeholder="선물명을 적어주세요"
-              onChange={(text) => setGiftName(text)}
-            />
-          </div>
+    <div className="flex h-fit w-full flex-col px-4 py-5">
+      <div className="flex flex-1 flex-col gap-[22px]">
+        <div className="flex flex-col gap-2">
+          <UploadImageList
+            combinedImages={combinedImages}
+            setCombinedImages={setCombinedImages}
+          />
+          <p className={`text-xs font-medium ${imageTextColor}`}>
+            최소 1장의 사진이 필요해요 (사진 용량 제한 10MB)
+          </p>
         </div>
-        {isGiftNameFilled && (
-          <motion.div
-            ref={reasonRef}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            <InputReason
-              value={giftReason}
-              onReasonChange={setGiftReason}
-              onTagChange={setGiftTag}
-              giftBoxIndex={index}
-            />
-          </motion.div>
-        )}
-        {(isReasonFilled || isBoxEditing) && (
-          <motion.div
-            ref={linkRef}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            <InputLink value={giftLink} onChange={setGiftLink} />
-          </motion.div>
-        )}
+        <div className="flex flex-col gap-[50px]">
+          <CharacterCountInput
+            maxLength={GIFT_NAME_MAX_LENGTH}
+            value={giftName}
+            placeholder="선물명을 적어주세요"
+            onChange={(text) => setGiftName(text)}
+          />
+          <InputReason
+            value={giftReason}
+            onReasonChange={setGiftReason}
+            onTagChange={setGiftTag}
+            giftBoxIndex={index}
+          />
+          <InputLink value={giftLink} onChange={setGiftLink} />
+        </div>
       </div>
-      <div className="sticky bottom-4 w-full left-0">
+      <div className="mt-10">
         <Button size="lg" onClick={handleSubmit} disabled={!isFormValid}>
           {isBoxEditing ? "수정 완료" : "채우기 완료"}
         </Button>
