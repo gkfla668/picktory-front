@@ -1,5 +1,7 @@
 "use client";
 
+import cloneDeep from "lodash.clonedeep";
+import isEqual from "lodash.isequal";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -17,6 +19,7 @@ import {
   BUNDLE_NAME_MAX_LENGTH,
   MIN_GIFTBOX_AMOUNT,
 } from "@/constants/constants";
+import { toast } from "@/hooks/use-toast";
 import useDynamicTitle from "@/hooks/useDynamicTitle";
 import { useTempSaveBundle } from "@/hooks/useTempSaveBundle";
 import { useEditDraftBundleNameMutation } from "@/queries/useEditDraftBundleNameMutation";
@@ -26,6 +29,7 @@ import {
   useIsOpenDetailGiftBoxStore,
   useSelectedBagStore,
   useLoadingStore,
+  useSnapshotGiftBoxesStore,
 } from "@/stores/bundle/useStore";
 import { useEditBoxStore, useGiftStore } from "@/stores/gift-upload/useStore";
 
@@ -91,13 +95,21 @@ const Header = () => {
   const [showTempSave, setShowTempSave] = useState(false);
 
   const bundleId = sessionStorage.getItem("bundleId");
+  const filledCount = giftBoxes.filter((box) => box && box.filled).length;
 
   useEffect(() => {
-    const filledCount = giftBoxes.filter((box) => box && box.filled).length;
     setShowTempSave(filledCount >= MIN_GIFTBOX_AMOUNT);
-  }, [giftBoxes]);
+  }, [filledCount, giftBoxes]);
 
   const { handleTempSave } = useTempSaveBundle();
+
+  const { snapshotGiftBoxes, setSnapshotGiftBoxes } =
+    useSnapshotGiftBoxesStore();
+
+  const handleTempSaveClick = () => {
+    handleTempSave({ bundleName, selectedBagIndex });
+    setSnapshotGiftBoxes(cloneDeep(giftBoxes));
+  };
 
   if (isBundleDetailStepTwo && isOpenDetailGiftBox) {
     return (
@@ -156,27 +168,56 @@ const Header = () => {
     if ((isStepThree && isBundleDeliveryPage) || isLoading) return null;
 
     const handleBack = () => {
-      if (isGiftUploadPage) setIsBoxEditing(false);
-      if (pathname === "/bundle/add") {
-        // 임시 저장된 보따리의 경우
-        if (bundleId) {
-          // 최초 생성 상태인 경우
-          if (isCreatingBundle) {
-            router.push("/home");
+      if (isGiftUploadPage) {
+        setIsBoxEditing(false);
+      }
+
+      if (pathname !== "/bundle/add") {
+        router.back();
+        return;
+      }
+
+      if (bundleId && !isCreatingBundle) {
+        const hasChanged =
+          snapshotGiftBoxes && !isEqual(snapshotGiftBoxes, giftBoxes);
+
+        if (hasChanged) {
+          if (filledCount === 0) {
+            toast({
+              title: "선물 박스를 하나 이상 채운 뒤에 임시 저장이 가능합니다.",
+            });
           } else {
-            router.push(`/my-bundles/${bundleId}`);
+            setShowGoToHomeDrawer(true);
           }
         } else {
-          const hasFilledBox = giftBoxes.some((box) => box?.filled);
-          if (hasFilledBox) {
-            setShowGoToHomeDrawer(true);
-          } else {
-            router.push("/home");
-          }
+          router.push(`/my-bundles/${bundleId}`);
         }
         return;
       }
-      router.back();
+
+      if (!snapshotGiftBoxes && filledCount > 0) {
+        setShowGoToHomeDrawer(true);
+        return;
+      }
+      if (snapshotGiftBoxes && !isEqual(snapshotGiftBoxes, giftBoxes)) {
+        if (filledCount === 0) {
+          toast({
+            title: "선물 박스를 하나 이상 채운 뒤에 임시 저장이 가능합니다.",
+          });
+        } else {
+          setShowGoToHomeDrawer(true);
+        }
+        return;
+      }
+      if (!bundleId) {
+        router.push("/home");
+        return;
+      }
+      if (isCreatingBundle) {
+        router.push("/home");
+      } else {
+        router.push(`/my-bundles/${bundleId}`);
+      }
     };
 
     return (
@@ -267,7 +308,7 @@ const Header = () => {
       return (
         <Button
           variant="ghost"
-          onClick={() => handleTempSave({ bundleName, selectedBagIndex })}
+          onClick={handleTempSaveClick}
           className="flex justify-end text-[15px] text-gray-200"
         >
           임시 저장
@@ -303,14 +344,13 @@ const Header = () => {
       <div className="absolute right-4 top-1/2 -translate-y-1/2">
         <RightButton />
       </div>
-      <GoToHomeDrawer
-        open={showGoToHomeDrawer}
-        onClose={() => setShowGoToHomeDrawer(false)}
-        onConfirm={() => {
-          setShowGoToHomeDrawer(false);
-          router.push("/home");
-        }}
-      />
+      {bundleId && (
+        <GoToHomeDrawer
+          open={showGoToHomeDrawer}
+          onClose={() => setShowGoToHomeDrawer(false)}
+          bundleId={bundleId}
+        />
+      )}
     </div>
   );
 };

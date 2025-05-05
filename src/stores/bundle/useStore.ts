@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
+import { GiftBox } from "@/types/bundle/types";
+
 interface SelectedBagStore {
   selectedBagIndex: number;
   setSelectedBagIndex: (index: number) => void;
@@ -133,3 +135,19 @@ export const useLoadingStore = create<LoadingState>((set) => ({
   isLoading: false,
   setIsLoading: (val) => set({ isLoading: val }),
 }));
+
+/** 임시저장 하기 전 기준의 giftBoxes를 저장 */
+interface SnapshotGiftBoxesStore {
+  snapshotGiftBoxes: GiftBox[] | null;
+  setSnapshotGiftBoxes: (boxes: GiftBox[] | null) => void;
+}
+
+export const useSnapshotGiftBoxesStore = create<SnapshotGiftBoxesStore>()(
+  persist(
+    (set) => ({
+      snapshotGiftBoxes: null,
+      setSnapshotGiftBoxes: (boxes) => set({ snapshotGiftBoxes: boxes }),
+    }),
+    { name: "creating-bundle" },
+  ),
+);
