@@ -23,9 +23,8 @@
 <img src="https://github.com/user-attachments/assets/42adced6-9334-4615-88d2-48734d17fc0b" width=
 "600" />
 
-#### Back-end
+#### [Back-end](https://github.com/dnd-side-project/dnd-12th-5-backend)
 <img src="https://github.com/user-attachments/assets/b6d71c5c-8f6b-47a2-8937-8e87db751d9e" width=
 "600" />
-
 
 
