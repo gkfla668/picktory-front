@@ -1,4 +1,4 @@
-## 🎁 Picktory
+## 🎁 PICKTORY [바로가기](https://www.picktory.net/)
 
 ![표지](https://github.com/user-attachments/assets/ca515621-10be-4655-b8dc-c15fde8f298b)
 
@@ -14,12 +14,12 @@
 |:-:|:-:|:-:|:-:
 |FE : [@gkfla668](https://github.com/gkfla668)|FE : [@xxxjinn](https://github.com/xxxjinn)|BE : [@kitechoi](https://github.com/kitechoi)|BE : [@TaskerJang](https://github.com/TaskerJang)
 
-### 🔨 아키텍처
-#### 🖥️ Front-end
+### 🔨 Architecture
+#### Front-end
 <img src="https://github.com/user-attachments/assets/42adced6-9334-4615-88d2-48734d17fc0b" width=
 "600" />
 
-#### 🧠 Back-end
+#### Back-end
 <img src="https://github.com/user-attachments/assets/b6d71c5c-8f6b-47a2-8937-8e87db751d9e" width=
 "600" />
 
