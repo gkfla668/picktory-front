@@ -9,6 +9,10 @@
 <img width="1920" alt="화면3" src="https://github.com/user-attachments/assets/83a829a0-5b3e-44ce-ba4a-09c949528c85" />
 <img width="1920" alt="화면4" src="https://github.com/user-attachments/assets/f38ee33f-0e2d-4f06-ab79-256887fb753f" />
 
+### 🧠 IA: Information Architecture
+![image](https://github.com/user-attachments/assets/85e250b8-4419-4046-a7c4-398fe2ab89a3)
+
+
 ### 👨‍👩‍👧‍👦 팀원 구성
 |<img src="https://avatars.githubusercontent.com/u/81246338?v=4,gkfla668,임하림,https://github.com/gkfla668" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/102955516?v=4,xxxjinn,HyunJin,https://github.com/xxxjinn" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/98301622?v=4,kitechoi,,https://github.com/kitechoi" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/124780552?v=4,TaskerJang,HyunSang Jang,https://github.com/TaskerJang" width="150" height="150"/>
 |:-:|:-:|:-:|:-:
