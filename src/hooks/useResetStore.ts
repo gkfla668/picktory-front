@@ -3,22 +3,22 @@ import { useEffect } from "react";
 import {
   useSelectedBagStore,
   useBundleNameStore,
-  useIsClickedUpdateFilledButton,
+  useSnapshotGiftBoxesStore,
 } from "@/stores/bundle/useStore";
 import { resetGiftBoxes } from "@/utils/giftBoxUtils";
 
 const useResetStore = () => {
   const { setSelectedBagIndex } = useSelectedBagStore();
   const { setBundleName } = useBundleNameStore();
-  const { setIsClickedUpdateFilledButton } = useIsClickedUpdateFilledButton();
+  const { setSnapshotGiftBoxes } = useSnapshotGiftBoxesStore();
 
   useEffect(() => {
     resetGiftBoxes();
     setSelectedBagIndex(0);
     setBundleName("");
     sessionStorage.removeItem("bundleId");
-    setIsClickedUpdateFilledButton(false);
-  }, [setSelectedBagIndex, setBundleName, setIsClickedUpdateFilledButton]);
+    setSnapshotGiftBoxes(null);
+  }, [setSelectedBagIndex, setBundleName]);
 };
 
 export default useResetStore;

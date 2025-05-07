@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
+import { GiftBox } from "@/types/bundle/types";
+
 interface SelectedBagStore {
   selectedBagIndex: number;
   setSelectedBagIndex: (index: number) => void;
@@ -113,21 +115,39 @@ export const useIsUploadAnswerStore = create<IsUploadAnswerStore>()(
   ),
 );
 
-interface IsClickedUpdateFilledButtonStore {
-  isClickedUpdateFilledButton: boolean;
-  setIsClickedUpdateFilledButton: (isClicked: boolean) => void;
+/** 보따리 최초 생성 상태를 관리하는 store */
+interface BundleCreateState {
+  isCreatingBundle: boolean;
+  setIsCreatingBundle: (value: boolean) => void;
 }
 
-export const useIsClickedUpdateFilledButton =
-  create<IsClickedUpdateFilledButtonStore>()(
-    persist(
-      (set) => ({
-        isClickedUpdateFilledButton: false,
-        setIsClickedUpdateFilledButton: (isClicked) =>
-          set({ isClickedUpdateFilledButton: isClicked }),
-      }),
-      {
-        name: "cilcked-updateFilledButton",
-      },
-    ),
-  );
+export const useCreatingBundleStore = create<BundleCreateState>((set) => ({
+  isCreatingBundle: false,
+  setIsCreatingBundle: (value) => set({ isCreatingBundle: value }),
+}));
+
+interface LoadingState {
+  isLoading: boolean;
+  setIsLoading: (val: boolean) => void;
+}
+
+export const useLoadingStore = create<LoadingState>((set) => ({
+  isLoading: false,
+  setIsLoading: (val) => set({ isLoading: val }),
+}));
+
+/** 임시저장 하기 전 기준의 giftBoxes를 저장 */
+interface SnapshotGiftBoxesStore {
+  snapshotGiftBoxes: GiftBox[] | null;
+  setSnapshotGiftBoxes: (boxes: GiftBox[] | null) => void;
+}
+
+export const useSnapshotGiftBoxesStore = create<SnapshotGiftBoxesStore>()(
+  persist(
+    (set) => ({
+      snapshotGiftBoxes: null,
+      setSnapshotGiftBoxes: (boxes) => set({ snapshotGiftBoxes: boxes }),
+    }),
+    { name: "creating-bundle" },
+  ),
+);

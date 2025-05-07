@@ -1,5 +1,7 @@
 "use client";
 
+import cloneDeep from "lodash.clonedeep";
+import isEqual from "lodash.isequal";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -17,14 +19,17 @@ import {
   BUNDLE_NAME_MAX_LENGTH,
   MIN_GIFTBOX_AMOUNT,
 } from "@/constants/constants";
+import { toast } from "@/hooks/use-toast";
 import useDynamicTitle from "@/hooks/useDynamicTitle";
 import { useTempSaveBundle } from "@/hooks/useTempSaveBundle";
 import { useEditDraftBundleNameMutation } from "@/queries/useEditDraftBundleNameMutation";
 import {
+  useCreatingBundleStore,
   useBundleNameStore,
-  useIsClickedUpdateFilledButton,
   useIsOpenDetailGiftBoxStore,
   useSelectedBagStore,
+  useLoadingStore,
+  useSnapshotGiftBoxesStore,
 } from "@/stores/bundle/useStore";
 import { useEditBoxStore, useGiftStore } from "@/stores/gift-upload/useStore";
 
@@ -47,17 +52,18 @@ const Header = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const step = searchParams?.get("step");
-  const isEdit = searchParams.get("isEdit") === "true";
+  const isStepThree = step === "3";
 
   const dynamicTitle = useDynamicTitle(); // 타이틀 동적 업데이트
 
-  const [isStepThree, setIsStepThree] = useState(false);
   const [showGoToHomeDrawer, setShowGoToHomeDrawer] = useState(false);
 
   const { setIsBoxEditing } = useEditBoxStore();
-
+  const { isCreatingBundle } = useCreatingBundleStore();
   const { isOpenDetailGiftBox, setIsOpenDetailGiftBox } =
     useIsOpenDetailGiftBoxStore();
+  const { bundleName } = useBundleNameStore();
+  const isLoading = useLoadingStore((state) => state.isLoading);
 
   const isAuthPage = ["/auth/login"].includes(pathname ?? "");
   const isHomePage = pathname === "/home";
@@ -68,17 +74,7 @@ const Header = () => {
   const isGiftUploadPage = pathname === "/gift-upload";
   const isBundleAddPage = pathname === "/bundle/add";
 
-  const { bundleName } = useBundleNameStore();
-
   const bgColor = isAuthPage ? "bg-pink-50" : "bg-white";
-
-  useEffect(() => {
-    setIsStepThree(step === "3");
-  }, [searchParams, step]);
-
-  useEffect(() => {
-    setIsStepThree(false);
-  }, [pathname]);
 
   const isBundleDetailStepTwo =
     pathname?.startsWith("/bundle/") && searchParams?.get("step") === "2";
@@ -99,14 +95,21 @@ const Header = () => {
   const [showTempSave, setShowTempSave] = useState(false);
 
   const bundleId = sessionStorage.getItem("bundleId");
-  const { isClickedUpdateFilledButton } = useIsClickedUpdateFilledButton();
+  const filledCount = giftBoxes.filter((box) => box && box.filled).length;
 
   useEffect(() => {
-    const filledCount = giftBoxes.filter((box) => box && box.filled).length;
     setShowTempSave(filledCount >= MIN_GIFTBOX_AMOUNT);
-  }, [giftBoxes]);
+  }, [filledCount, giftBoxes]);
 
   const { handleTempSave } = useTempSaveBundle();
+
+  const { snapshotGiftBoxes, setSnapshotGiftBoxes } =
+    useSnapshotGiftBoxesStore();
+
+  const handleTempSaveClick = () => {
+    handleTempSave({ bundleName, selectedBagIndex });
+    setSnapshotGiftBoxes(cloneDeep(giftBoxes));
+  };
 
   if (isBundleDetailStepTwo && isOpenDetailGiftBox) {
     return (
@@ -162,28 +165,59 @@ const Header = () => {
   }
 
   const BackButton = () => {
-    if (isStepThree && isBundleDeliveryPage) return null;
+    if ((isStepThree && isBundleDeliveryPage) || isLoading) return null;
 
     const handleBack = () => {
-      if (isGiftUploadPage) setIsBoxEditing(false);
-      if (pathname === "/bundle/add") {
-        if (bundleId) {
-          if (!isClickedUpdateFilledButton) {
-            router.push("/home");
+      if (isGiftUploadPage) {
+        setIsBoxEditing(false);
+      }
+
+      if (pathname !== "/bundle/add") {
+        router.back();
+        return;
+      }
+
+      if (bundleId && !isCreatingBundle) {
+        const hasChanged =
+          snapshotGiftBoxes && !isEqual(snapshotGiftBoxes, giftBoxes);
+
+        if (hasChanged) {
+          if (filledCount === 0) {
+            toast({
+              title: "선물 박스를 하나 이상 채운 뒤에 임시 저장이 가능합니다.",
+            });
           } else {
-            router.back();
+            setShowGoToHomeDrawer(true);
           }
         } else {
-          const hasFilledBox = giftBoxes.some((box) => box?.filled);
-          if (hasFilledBox) {
-            setShowGoToHomeDrawer(true);
-          } else {
-            router.push("/home");
-          }
+          router.push(`/my-bundles/${bundleId}`);
         }
         return;
       }
-      router.back();
+
+      if (!snapshotGiftBoxes && filledCount > 0) {
+        setShowGoToHomeDrawer(true);
+        return;
+      }
+      if (snapshotGiftBoxes && !isEqual(snapshotGiftBoxes, giftBoxes)) {
+        if (filledCount === 0) {
+          toast({
+            title: "선물 박스를 하나 이상 채운 뒤에 임시 저장이 가능합니다.",
+          });
+        } else {
+          setShowGoToHomeDrawer(true);
+        }
+        return;
+      }
+      if (!bundleId) {
+        router.push("/home");
+        return;
+      }
+      if (isCreatingBundle) {
+        router.push("/home");
+      } else {
+        router.push(`/my-bundles/${bundleId}`);
+      }
     };
 
     return (
@@ -199,7 +233,7 @@ const Header = () => {
 
   const Title = () => {
     const { setBundleName } = useBundleNameStore();
-    const [isEditing, setIsEditing] = useState(false);
+    const [isNameEditing, setIsNameEditing] = useState(false);
     const [inputValue, setInputValue] = useState(dynamicTitle);
     const { mutate } = useEditDraftBundleNameMutation(
       inputValue,
@@ -210,10 +244,6 @@ const Header = () => {
       setInputValue(dynamicTitle);
     }, []);
 
-    const handleEditBundleNameButton = () => {
-      setIsEditing(true);
-    };
-
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       if (value.length <= BUNDLE_NAME_MAX_LENGTH) {
@@ -222,25 +252,26 @@ const Header = () => {
     };
 
     const saveAndClose = () => {
-      setIsEditing(false);
+      setIsNameEditing(false);
       setBundleName(inputValue);
 
-      if (isEdit) {
-        mutate();
+      // 임시 저장된 보따리의 경우
+      if (bundleId) {
+        mutate(); // 이름 수정 API 호출
       }
     };
 
     const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter") saveAndClose();
       if (e.key === "Escape") {
-        setIsEditing(false);
+        setIsNameEditing(false);
         setInputValue(dynamicTitle);
       }
     };
 
     return isBundleAddPage ? (
       <div className="flex items-center justify-center">
-        {isEditing ? (
+        {isNameEditing ? (
           <Input
             autoFocus
             value={inputValue}
@@ -257,7 +288,7 @@ const Header = () => {
             </h1>
             <Button
               variant="ghost"
-              onClick={handleEditBundleNameButton}
+              onClick={() => setIsNameEditing(true)}
               className="ml-[2px] w-[20px] min-w-[20px]"
             >
               <Icon src={EditIcon} alt="edit-bundleName" />
@@ -277,7 +308,7 @@ const Header = () => {
       return (
         <Button
           variant="ghost"
-          onClick={() => handleTempSave({ bundleName, selectedBagIndex })}
+          onClick={handleTempSaveClick}
           className="flex justify-end text-[15px] text-gray-200"
         >
           임시 저장
@@ -285,7 +316,7 @@ const Header = () => {
       );
     }
 
-    if (isBundleDeliveryPage && isStepThree) {
+    if (isBundleDeliveryPage && isStepThree && !isLoading) {
       return (
         <Button
           onClick={() => router.push("/home")}
@@ -313,14 +344,13 @@ const Header = () => {
       <div className="absolute right-4 top-1/2 -translate-y-1/2">
         <RightButton />
       </div>
-      <GoToHomeDrawer
-        open={showGoToHomeDrawer}
-        onClose={() => setShowGoToHomeDrawer(false)}
-        onConfirm={() => {
-          setShowGoToHomeDrawer(false);
-          router.push("/home");
-        }}
-      />
+      {bundleId && (
+        <GoToHomeDrawer
+          open={showGoToHomeDrawer}
+          onClose={() => setShowGoToHomeDrawer(false)}
+          bundleId={bundleId}
+        />
+      )}
     </div>
   );
 };
